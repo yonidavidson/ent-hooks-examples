@@ -19,3 +19,8 @@ func main() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 }
+
+//TODO:
+// 1. Add Hooks.
+// 2. Add Runner.
+// 3. Example.
