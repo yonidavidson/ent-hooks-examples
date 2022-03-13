@@ -53,7 +53,11 @@ func dogCloudReSync(next ent.Mutator) ent.Mutator {
 		}
 		v, err := next.Mutate(ctx, m)
 		if err == nil {
-			m.Client().CloudSyncer.Sync(ctx, cloudID)
+			if tx, err := m.Tx(); err == nil {
+				cloudSync(ctx, tx, cloudID)
+			} else {
+				m.Client().CloudSyncer.Sync(ctx, cloudID)
+			}
 		}
 		return v, err
 	})
