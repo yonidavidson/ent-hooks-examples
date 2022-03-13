@@ -76,6 +76,7 @@ func (s *Syncer) start(cloudID int) {
 	s.wg.Add(1)
 	go func() {
 		defer s.wg.Done()
+		fmt.Printf("start sync for id %d\n", cloudID)
 		time.Sleep(2 * time.Second)
 		rs := rand.NewSource(time.Now().UnixNano())
 		r := rand.New(rs)

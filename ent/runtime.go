@@ -2,26 +2,4 @@
 
 package ent
 
-import (
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/schema"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
-)
-
-// The init function reads all schema descriptors with runtime code
-// (default values, validators, hooks and policies) and stitches it
-// to their package variables.
-func init() {
-	dogFields := schema.Dog{}.Fields()
-	_ = dogFields
-	// dogDescName is the schema descriptor for name field.
-	dogDescName := dogFields[0].Descriptor()
-	// dog.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	dog.NameValidator = dogDescName.Validators[0].(func(string) error)
-	userFields := schema.User{}.Fields()
-	_ = userFields
-	// userDescName is the schema descriptor for name field.
-	userDescName := userFields[0].Descriptor()
-	// user.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	user.NameValidator = userDescName.Validators[0].(func(string) error)
-}
+// The schema-stitching logic is generated in github.com/yonidavidson/ent-side-effect-hooks-example/ent/runtime/runtime.go

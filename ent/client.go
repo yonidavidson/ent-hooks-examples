@@ -330,7 +330,8 @@ func (c *DogClient) QueryOwner(d *Dog) *UserQuery {
 
 // Hooks returns the client hooks.
 func (c *DogClient) Hooks() []Hook {
-	return c.hooks.Dog
+	hooks := c.hooks.Dog
+	return append(hooks[:len(hooks):len(hooks)], dog.Hooks[:]...)
 }
 
 // UserClient is a client for the User schema.
@@ -452,5 +453,6 @@ func (c *UserClient) QueryCloud(u *User) *CloudQuery {
 
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
-	return c.hooks.User
+	hooks := c.hooks.User
+	return append(hooks[:len(hooks):len(hooks)], user.Hooks[:]...)
 }
