@@ -1,10 +1,14 @@
-module github.com/yonidavidson/entsideeffecthooksexample
+module github.com/yonidavidson/ent-side-effect-hooks-example
 
 go 1.17
 
 require (
+	entgo.io/ent v0.10.1
+	github.com/mattn/go-sqlite3 v1.14.10
+)
+
+require (
 	ariga.io/atlas v0.3.7-0.20220303204946-787354f533c3 // indirect
-	entgo.io/ent v0.10.1 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
@@ -13,7 +17,6 @@ require (
 	github.com/hashicorp/hcl/v2 v2.10.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
-	github.com/mattn/go-sqlite3 v1.14.10 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/spf13/cobra v1.3.0 // indirect

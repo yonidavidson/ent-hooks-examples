@@ -4,7 +4,7 @@ package cloud
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/predicate"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

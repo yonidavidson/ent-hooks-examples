@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/cloud"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
 // User is the model entity for the User schema.

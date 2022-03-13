@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
 )
 
 // Cloud is the model entity for the Cloud schema.

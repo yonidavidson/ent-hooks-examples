@@ -5,6 +5,7 @@ package ent
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/hook"
 )
 
 // Option function to configure the client.
@@ -19,7 +20,8 @@ type config struct {
 	// log used for logging on debug mode.
 	log func(...interface{})
 	// hooks to execute on mutations.
-	hooks *hooks
+	hooks       *hooks
+	CloudSyncer hook.Syncer
 }
 
 // hooks per client, for fast access.
@@ -57,5 +59,12 @@ func Log(fn func(...interface{})) Option {
 func Driver(driver dialect.Driver) Option {
 	return func(c *config) {
 		c.driver = driver
+	}
+}
+
+// CloudSyncer configures the CloudSyncer.
+func CloudSyncer(v hook.Syncer) Option {
+	return func(c *config) {
+		c.CloudSyncer = v
 	}
 }

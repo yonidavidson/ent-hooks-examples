@@ -3,9 +3,9 @@
 package ent
 
 import (
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/dog"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/schema"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/schema"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

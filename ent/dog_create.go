@@ -9,8 +9,8 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/dog"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
 // DogCreate is the builder for creating a Dog entity.

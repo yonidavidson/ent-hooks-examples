@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yonidavidson/entsideeffecthooksexample/ent"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent"
 )
 
 // The CloudFunc type is an adapter to allow the use of ordinary

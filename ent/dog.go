@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/dog"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
 // Dog is the model entity for the Dog schema.

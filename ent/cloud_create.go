@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
 )
 
 // CloudCreate is the builder for creating a Cloud entity.

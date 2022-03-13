@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/migrate"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/migrate"
 
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/cloud"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/dog"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

@@ -10,10 +10,10 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/cloud"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/dog"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/predicate"
-	"github.com/yonidavidson/entsideeffecthooksexample/ent/user"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.

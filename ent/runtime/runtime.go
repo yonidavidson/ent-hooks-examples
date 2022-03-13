@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/yonidavidson/entsideeffecthooksexample/ent/runtime.go
+// The schema-stitching logic is generated in github.com/yonidavidson/ent-side-effect-hooks-example/ent/runtime.go
 
 const (
 	Version = "v0.10.1"                                         // Version of ent codegen.
