@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
 
@@ -21,15 +21,15 @@ type User struct {
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges      UserEdges `json:"edges"`
-	user_cloud *int
+	user_cache *int
 }
 
 // UserEdges holds the relations/edges for other nodes in the graph.
 type UserEdges struct {
 	// Pets holds the value of the pets edge.
 	Pets []*Dog `json:"pets,omitempty"`
-	// Cloud holds the value of the cloud edge.
-	Cloud *Cloud `json:"cloud,omitempty"`
+	// Cache holds the value of the cache edge.
+	Cache *Cache `json:"cache,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
@@ -44,18 +44,18 @@ func (e UserEdges) PetsOrErr() ([]*Dog, error) {
 	return nil, &NotLoadedError{edge: "pets"}
 }
 
-// CloudOrErr returns the Cloud value or an error if the edge
+// CacheOrErr returns the Cache value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e UserEdges) CloudOrErr() (*Cloud, error) {
+func (e UserEdges) CacheOrErr() (*Cache, error) {
 	if e.loadedTypes[1] {
-		if e.Cloud == nil {
-			// The edge cloud was loaded in eager-loading,
+		if e.Cache == nil {
+			// The edge cache was loaded in eager-loading,
 			// but was not found.
-			return nil, &NotFoundError{label: cloud.Label}
+			return nil, &NotFoundError{label: cache.Label}
 		}
-		return e.Cloud, nil
+		return e.Cache, nil
 	}
-	return nil, &NotLoadedError{edge: "cloud"}
+	return nil, &NotLoadedError{edge: "cache"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -67,7 +67,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case user.FieldName:
 			values[i] = new(sql.NullString)
-		case user.ForeignKeys[0]: // user_cloud
+		case user.ForeignKeys[0]: // user_cache
 			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type User", columns[i])
@@ -98,10 +98,10 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			}
 		case user.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field user_cloud", value)
+				return fmt.Errorf("unexpected type %T for edge-field user_cache", value)
 			} else if value.Valid {
-				u.user_cloud = new(int)
-				*u.user_cloud = int(value.Int64)
+				u.user_cache = new(int)
+				*u.user_cache = int(value.Int64)
 			}
 		}
 	}
@@ -113,9 +113,9 @@ func (u *User) QueryPets() *DogQuery {
 	return (&UserClient{config: u.config}).QueryPets(u)
 }
 
-// QueryCloud queries the "cloud" edge of the User entity.
-func (u *User) QueryCloud() *CloudQuery {
-	return (&UserClient{config: u.config}).QueryCloud(u)
+// QueryCache queries the "cache" edge of the User entity.
+func (u *User) QueryCache() *CacheQuery {
+	return (&UserClient{config: u.config}).QueryCache(u)
 }
 
 // Update returns a builder for updating this User.

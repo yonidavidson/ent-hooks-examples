@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
@@ -31,7 +31,7 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		cloud.Table: cloud.ValidColumn,
+		cache.Table: cache.ValidColumn,
 		dog.Table:   dog.ValidColumn,
 		user.Table:  user.ValidColumn,
 	}

@@ -20,8 +20,6 @@ func init() {
 	dogDescName := dogFields[0].Descriptor()
 	// dog.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	dog.NameValidator = dogDescName.Validators[0].(func(string) error)
-	userHooks := schema.User{}.Hooks()
-	user.Hooks[0] = userHooks[0]
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescName is the schema descriptor for name field.

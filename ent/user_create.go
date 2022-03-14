@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
 )
@@ -42,23 +42,23 @@ func (uc *UserCreate) AddPets(d ...*Dog) *UserCreate {
 	return uc.AddPetIDs(ids...)
 }
 
-// SetCloudID sets the "cloud" edge to the Cloud entity by ID.
-func (uc *UserCreate) SetCloudID(id int) *UserCreate {
-	uc.mutation.SetCloudID(id)
+// SetCacheID sets the "cache" edge to the Cache entity by ID.
+func (uc *UserCreate) SetCacheID(id int) *UserCreate {
+	uc.mutation.SetCacheID(id)
 	return uc
 }
 
-// SetNillableCloudID sets the "cloud" edge to the Cloud entity by ID if the given value is not nil.
-func (uc *UserCreate) SetNillableCloudID(id *int) *UserCreate {
+// SetNillableCacheID sets the "cache" edge to the Cache entity by ID if the given value is not nil.
+func (uc *UserCreate) SetNillableCacheID(id *int) *UserCreate {
 	if id != nil {
-		uc = uc.SetCloudID(*id)
+		uc = uc.SetCacheID(*id)
 	}
 	return uc
 }
 
-// SetCloud sets the "cloud" edge to the Cloud entity.
-func (uc *UserCreate) SetCloud(c *Cloud) *UserCreate {
-	return uc.SetCloudID(c.ID)
+// SetCache sets the "cache" edge to the Cache entity.
+func (uc *UserCreate) SetCache(c *Cache) *UserCreate {
+	return uc.SetCacheID(c.ID)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -193,24 +193,24 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := uc.mutation.CloudIDs(); len(nodes) > 0 {
+	if nodes := uc.mutation.CacheIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   user.CloudTable,
-			Columns: []string{user.CloudColumn},
+			Table:   user.CacheTable,
+			Columns: []string{user.CacheColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: cloud.FieldID,
+					Column: cache.FieldID,
 				},
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.user_cloud = &nodes[0]
+		_node.user_cache = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

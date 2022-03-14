@@ -11,70 +11,70 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
 )
 
-// CloudQuery is the builder for querying Cloud entities.
-type CloudQuery struct {
+// CacheQuery is the builder for querying Cache entities.
+type CacheQuery struct {
 	config
 	limit      *int
 	offset     *int
 	unique     *bool
 	order      []OrderFunc
 	fields     []string
-	predicates []predicate.Cloud
+	predicates []predicate.Cache
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the CloudQuery builder.
-func (cq *CloudQuery) Where(ps ...predicate.Cloud) *CloudQuery {
+// Where adds a new predicate for the CacheQuery builder.
+func (cq *CacheQuery) Where(ps ...predicate.Cache) *CacheQuery {
 	cq.predicates = append(cq.predicates, ps...)
 	return cq
 }
 
 // Limit adds a limit step to the query.
-func (cq *CloudQuery) Limit(limit int) *CloudQuery {
+func (cq *CacheQuery) Limit(limit int) *CacheQuery {
 	cq.limit = &limit
 	return cq
 }
 
 // Offset adds an offset step to the query.
-func (cq *CloudQuery) Offset(offset int) *CloudQuery {
+func (cq *CacheQuery) Offset(offset int) *CacheQuery {
 	cq.offset = &offset
 	return cq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (cq *CloudQuery) Unique(unique bool) *CloudQuery {
+func (cq *CacheQuery) Unique(unique bool) *CacheQuery {
 	cq.unique = &unique
 	return cq
 }
 
 // Order adds an order step to the query.
-func (cq *CloudQuery) Order(o ...OrderFunc) *CloudQuery {
+func (cq *CacheQuery) Order(o ...OrderFunc) *CacheQuery {
 	cq.order = append(cq.order, o...)
 	return cq
 }
 
-// First returns the first Cloud entity from the query.
-// Returns a *NotFoundError when no Cloud was found.
-func (cq *CloudQuery) First(ctx context.Context) (*Cloud, error) {
+// First returns the first Cache entity from the query.
+// Returns a *NotFoundError when no Cache was found.
+func (cq *CacheQuery) First(ctx context.Context) (*Cache, error) {
 	nodes, err := cq.Limit(1).All(ctx)
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{cloud.Label}
+		return nil, &NotFoundError{cache.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (cq *CloudQuery) FirstX(ctx context.Context) *Cloud {
+func (cq *CacheQuery) FirstX(ctx context.Context) *Cache {
 	node, err := cq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -82,22 +82,22 @@ func (cq *CloudQuery) FirstX(ctx context.Context) *Cloud {
 	return node
 }
 
-// FirstID returns the first Cloud ID from the query.
-// Returns a *NotFoundError when no Cloud ID was found.
-func (cq *CloudQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Cache ID from the query.
+// Returns a *NotFoundError when no Cache ID was found.
+func (cq *CacheQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = cq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CloudQuery) FirstIDX(ctx context.Context) int {
+func (cq *CacheQuery) FirstIDX(ctx context.Context) int {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -105,10 +105,10 @@ func (cq *CloudQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single Cloud entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one Cloud entity is found.
-// Returns a *NotFoundError when no Cloud entities are found.
-func (cq *CloudQuery) Only(ctx context.Context) (*Cloud, error) {
+// Only returns a single Cache entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one Cache entity is found.
+// Returns a *NotFoundError when no Cache entities are found.
+func (cq *CacheQuery) Only(ctx context.Context) (*Cache, error) {
 	nodes, err := cq.Limit(2).All(ctx)
 	if err != nil {
 		return nil, err
@@ -117,14 +117,14 @@ func (cq *CloudQuery) Only(ctx context.Context) (*Cloud, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{cloud.Label}
+		return nil, &NotFoundError{cache.Label}
 	default:
-		return nil, &NotSingularError{cloud.Label}
+		return nil, &NotSingularError{cache.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (cq *CloudQuery) OnlyX(ctx context.Context) *Cloud {
+func (cq *CacheQuery) OnlyX(ctx context.Context) *Cache {
 	node, err := cq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -132,10 +132,10 @@ func (cq *CloudQuery) OnlyX(ctx context.Context) *Cloud {
 	return node
 }
 
-// OnlyID is like Only, but returns the only Cloud ID in the query.
-// Returns a *NotSingularError when more than one Cloud ID is found.
+// OnlyID is like Only, but returns the only Cache ID in the query.
+// Returns a *NotSingularError when more than one Cache ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CloudQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (cq *CacheQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = cq.Limit(2).IDs(ctx); err != nil {
 		return
@@ -144,15 +144,15 @@ func (cq *CloudQuery) OnlyID(ctx context.Context) (id int, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = &NotSingularError{cloud.Label}
+		err = &NotSingularError{cache.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CloudQuery) OnlyIDX(ctx context.Context) int {
+func (cq *CacheQuery) OnlyIDX(ctx context.Context) int {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -160,8 +160,8 @@ func (cq *CloudQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of Clouds.
-func (cq *CloudQuery) All(ctx context.Context) ([]*Cloud, error) {
+// All executes the query and returns a list of Caches.
+func (cq *CacheQuery) All(ctx context.Context) ([]*Cache, error) {
 	if err := cq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (cq *CloudQuery) All(ctx context.Context) ([]*Cloud, error) {
 }
 
 // AllX is like All, but panics if an error occurs.
-func (cq *CloudQuery) AllX(ctx context.Context) []*Cloud {
+func (cq *CacheQuery) AllX(ctx context.Context) []*Cache {
 	nodes, err := cq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -177,17 +177,17 @@ func (cq *CloudQuery) AllX(ctx context.Context) []*Cloud {
 	return nodes
 }
 
-// IDs executes the query and returns a list of Cloud IDs.
-func (cq *CloudQuery) IDs(ctx context.Context) ([]int, error) {
+// IDs executes the query and returns a list of Cache IDs.
+func (cq *CacheQuery) IDs(ctx context.Context) ([]int, error) {
 	var ids []int
-	if err := cq.Select(cloud.FieldID).Scan(ctx, &ids); err != nil {
+	if err := cq.Select(cache.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CloudQuery) IDsX(ctx context.Context) []int {
+func (cq *CacheQuery) IDsX(ctx context.Context) []int {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -196,7 +196,7 @@ func (cq *CloudQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (cq *CloudQuery) Count(ctx context.Context) (int, error) {
+func (cq *CacheQuery) Count(ctx context.Context) (int, error) {
 	if err := cq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -204,7 +204,7 @@ func (cq *CloudQuery) Count(ctx context.Context) (int, error) {
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (cq *CloudQuery) CountX(ctx context.Context) int {
+func (cq *CacheQuery) CountX(ctx context.Context) int {
 	count, err := cq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -213,7 +213,7 @@ func (cq *CloudQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (cq *CloudQuery) Exist(ctx context.Context) (bool, error) {
+func (cq *CacheQuery) Exist(ctx context.Context) (bool, error) {
 	if err := cq.prepareQuery(ctx); err != nil {
 		return false, err
 	}
@@ -221,7 +221,7 @@ func (cq *CloudQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (cq *CloudQuery) ExistX(ctx context.Context) bool {
+func (cq *CacheQuery) ExistX(ctx context.Context) bool {
 	exist, err := cq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -229,18 +229,18 @@ func (cq *CloudQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the CloudQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the CacheQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (cq *CloudQuery) Clone() *CloudQuery {
+func (cq *CacheQuery) Clone() *CacheQuery {
 	if cq == nil {
 		return nil
 	}
-	return &CloudQuery{
+	return &CacheQuery{
 		config:     cq.config,
 		limit:      cq.limit,
 		offset:     cq.offset,
 		order:      append([]OrderFunc{}, cq.order...),
-		predicates: append([]predicate.Cloud{}, cq.predicates...),
+		predicates: append([]predicate.Cache{}, cq.predicates...),
 		// clone intermediate query.
 		sql:    cq.sql.Clone(),
 		path:   cq.path,
@@ -258,13 +258,13 @@ func (cq *CloudQuery) Clone() *CloudQuery {
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.Cloud.Query().
-//		GroupBy(cloud.FieldWalks).
+//	client.Cache.Query().
+//		GroupBy(cache.FieldWalks).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
-func (cq *CloudQuery) GroupBy(field string, fields ...string) *CloudGroupBy {
-	group := &CloudGroupBy{config: cq.config}
+func (cq *CacheQuery) GroupBy(field string, fields ...string) *CacheGroupBy {
+	group := &CacheGroupBy{config: cq.config}
 	group.fields = append([]string{field}, fields...)
 	group.path = func(ctx context.Context) (prev *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
@@ -284,18 +284,18 @@ func (cq *CloudQuery) GroupBy(field string, fields ...string) *CloudGroupBy {
 //		Walks int `json:"walks,omitempty"`
 //	}
 //
-//	client.Cloud.Query().
-//		Select(cloud.FieldWalks).
+//	client.Cache.Query().
+//		Select(cache.FieldWalks).
 //		Scan(ctx, &v)
 //
-func (cq *CloudQuery) Select(fields ...string) *CloudSelect {
+func (cq *CacheQuery) Select(fields ...string) *CacheSelect {
 	cq.fields = append(cq.fields, fields...)
-	return &CloudSelect{CloudQuery: cq}
+	return &CacheSelect{CacheQuery: cq}
 }
 
-func (cq *CloudQuery) prepareQuery(ctx context.Context) error {
+func (cq *CacheQuery) prepareQuery(ctx context.Context) error {
 	for _, f := range cq.fields {
-		if !cloud.ValidColumn(f) {
+		if !cache.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -309,13 +309,13 @@ func (cq *CloudQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (cq *CloudQuery) sqlAll(ctx context.Context) ([]*Cloud, error) {
+func (cq *CacheQuery) sqlAll(ctx context.Context) ([]*Cache, error) {
 	var (
-		nodes = []*Cloud{}
+		nodes = []*Cache{}
 		_spec = cq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
-		node := &Cloud{config: cq.config}
+		node := &Cache{config: cq.config}
 		nodes = append(nodes, node)
 		return node.scanValues(columns)
 	}
@@ -335,7 +335,7 @@ func (cq *CloudQuery) sqlAll(ctx context.Context) ([]*Cloud, error) {
 	return nodes, nil
 }
 
-func (cq *CloudQuery) sqlCount(ctx context.Context) (int, error) {
+func (cq *CacheQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := cq.querySpec()
 	_spec.Node.Columns = cq.fields
 	if len(cq.fields) > 0 {
@@ -344,7 +344,7 @@ func (cq *CloudQuery) sqlCount(ctx context.Context) (int, error) {
 	return sqlgraph.CountNodes(ctx, cq.driver, _spec)
 }
 
-func (cq *CloudQuery) sqlExist(ctx context.Context) (bool, error) {
+func (cq *CacheQuery) sqlExist(ctx context.Context) (bool, error) {
 	n, err := cq.sqlCount(ctx)
 	if err != nil {
 		return false, fmt.Errorf("ent: check existence: %w", err)
@@ -352,14 +352,14 @@ func (cq *CloudQuery) sqlExist(ctx context.Context) (bool, error) {
 	return n > 0, nil
 }
 
-func (cq *CloudQuery) querySpec() *sqlgraph.QuerySpec {
+func (cq *CacheQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := &sqlgraph.QuerySpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   cloud.Table,
-			Columns: cloud.Columns,
+			Table:   cache.Table,
+			Columns: cache.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: cloud.FieldID,
+				Column: cache.FieldID,
 			},
 		},
 		From:   cq.sql,
@@ -370,9 +370,9 @@ func (cq *CloudQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := cq.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, cloud.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, cache.FieldID)
 		for i := range fields {
-			if fields[i] != cloud.FieldID {
+			if fields[i] != cache.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -400,12 +400,12 @@ func (cq *CloudQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (cq *CloudQuery) sqlQuery(ctx context.Context) *sql.Selector {
+func (cq *CacheQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(cq.driver.Dialect())
-	t1 := builder.Table(cloud.Table)
+	t1 := builder.Table(cache.Table)
 	columns := cq.fields
 	if len(columns) == 0 {
-		columns = cloud.Columns
+		columns = cache.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if cq.sql != nil {
@@ -432,8 +432,8 @@ func (cq *CloudQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	return selector
 }
 
-// CloudGroupBy is the group-by builder for Cloud entities.
-type CloudGroupBy struct {
+// CacheGroupBy is the group-by builder for Cache entities.
+type CacheGroupBy struct {
 	config
 	fields []string
 	fns    []AggregateFunc
@@ -443,13 +443,13 @@ type CloudGroupBy struct {
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (cgb *CloudGroupBy) Aggregate(fns ...AggregateFunc) *CloudGroupBy {
+func (cgb *CacheGroupBy) Aggregate(fns ...AggregateFunc) *CacheGroupBy {
 	cgb.fns = append(cgb.fns, fns...)
 	return cgb
 }
 
 // Scan applies the group-by query and scans the result into the given value.
-func (cgb *CloudGroupBy) Scan(ctx context.Context, v interface{}) error {
+func (cgb *CacheGroupBy) Scan(ctx context.Context, v interface{}) error {
 	query, err := cgb.path(ctx)
 	if err != nil {
 		return err
@@ -459,7 +459,7 @@ func (cgb *CloudGroupBy) Scan(ctx context.Context, v interface{}) error {
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (cgb *CloudGroupBy) ScanX(ctx context.Context, v interface{}) {
+func (cgb *CacheGroupBy) ScanX(ctx context.Context, v interface{}) {
 	if err := cgb.Scan(ctx, v); err != nil {
 		panic(err)
 	}
@@ -467,9 +467,9 @@ func (cgb *CloudGroupBy) ScanX(ctx context.Context, v interface{}) {
 
 // Strings returns list of strings from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Strings(ctx context.Context) ([]string, error) {
+func (cgb *CacheGroupBy) Strings(ctx context.Context) ([]string, error) {
 	if len(cgb.fields) > 1 {
-		return nil, errors.New("ent: CloudGroupBy.Strings is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: CacheGroupBy.Strings is not achievable when grouping more than 1 field")
 	}
 	var v []string
 	if err := cgb.Scan(ctx, &v); err != nil {
@@ -479,7 +479,7 @@ func (cgb *CloudGroupBy) Strings(ctx context.Context) ([]string, error) {
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (cgb *CloudGroupBy) StringsX(ctx context.Context) []string {
+func (cgb *CacheGroupBy) StringsX(ctx context.Context) []string {
 	v, err := cgb.Strings(ctx)
 	if err != nil {
 		panic(err)
@@ -489,7 +489,7 @@ func (cgb *CloudGroupBy) StringsX(ctx context.Context) []string {
 
 // String returns a single string from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) String(ctx context.Context) (_ string, err error) {
+func (cgb *CacheGroupBy) String(ctx context.Context) (_ string, err error) {
 	var v []string
 	if v, err = cgb.Strings(ctx); err != nil {
 		return
@@ -498,15 +498,15 @@ func (cgb *CloudGroupBy) String(ctx context.Context) (_ string, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudGroupBy.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheGroupBy.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (cgb *CloudGroupBy) StringX(ctx context.Context) string {
+func (cgb *CacheGroupBy) StringX(ctx context.Context) string {
 	v, err := cgb.String(ctx)
 	if err != nil {
 		panic(err)
@@ -516,9 +516,9 @@ func (cgb *CloudGroupBy) StringX(ctx context.Context) string {
 
 // Ints returns list of ints from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Ints(ctx context.Context) ([]int, error) {
+func (cgb *CacheGroupBy) Ints(ctx context.Context) ([]int, error) {
 	if len(cgb.fields) > 1 {
-		return nil, errors.New("ent: CloudGroupBy.Ints is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: CacheGroupBy.Ints is not achievable when grouping more than 1 field")
 	}
 	var v []int
 	if err := cgb.Scan(ctx, &v); err != nil {
@@ -528,7 +528,7 @@ func (cgb *CloudGroupBy) Ints(ctx context.Context) ([]int, error) {
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (cgb *CloudGroupBy) IntsX(ctx context.Context) []int {
+func (cgb *CacheGroupBy) IntsX(ctx context.Context) []int {
 	v, err := cgb.Ints(ctx)
 	if err != nil {
 		panic(err)
@@ -538,7 +538,7 @@ func (cgb *CloudGroupBy) IntsX(ctx context.Context) []int {
 
 // Int returns a single int from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Int(ctx context.Context) (_ int, err error) {
+func (cgb *CacheGroupBy) Int(ctx context.Context) (_ int, err error) {
 	var v []int
 	if v, err = cgb.Ints(ctx); err != nil {
 		return
@@ -547,15 +547,15 @@ func (cgb *CloudGroupBy) Int(ctx context.Context) (_ int, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudGroupBy.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheGroupBy.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (cgb *CloudGroupBy) IntX(ctx context.Context) int {
+func (cgb *CacheGroupBy) IntX(ctx context.Context) int {
 	v, err := cgb.Int(ctx)
 	if err != nil {
 		panic(err)
@@ -565,9 +565,9 @@ func (cgb *CloudGroupBy) IntX(ctx context.Context) int {
 
 // Float64s returns list of float64s from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Float64s(ctx context.Context) ([]float64, error) {
+func (cgb *CacheGroupBy) Float64s(ctx context.Context) ([]float64, error) {
 	if len(cgb.fields) > 1 {
-		return nil, errors.New("ent: CloudGroupBy.Float64s is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: CacheGroupBy.Float64s is not achievable when grouping more than 1 field")
 	}
 	var v []float64
 	if err := cgb.Scan(ctx, &v); err != nil {
@@ -577,7 +577,7 @@ func (cgb *CloudGroupBy) Float64s(ctx context.Context) ([]float64, error) {
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (cgb *CloudGroupBy) Float64sX(ctx context.Context) []float64 {
+func (cgb *CacheGroupBy) Float64sX(ctx context.Context) []float64 {
 	v, err := cgb.Float64s(ctx)
 	if err != nil {
 		panic(err)
@@ -587,7 +587,7 @@ func (cgb *CloudGroupBy) Float64sX(ctx context.Context) []float64 {
 
 // Float64 returns a single float64 from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Float64(ctx context.Context) (_ float64, err error) {
+func (cgb *CacheGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
 	if v, err = cgb.Float64s(ctx); err != nil {
 		return
@@ -596,15 +596,15 @@ func (cgb *CloudGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudGroupBy.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheGroupBy.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (cgb *CloudGroupBy) Float64X(ctx context.Context) float64 {
+func (cgb *CacheGroupBy) Float64X(ctx context.Context) float64 {
 	v, err := cgb.Float64(ctx)
 	if err != nil {
 		panic(err)
@@ -614,9 +614,9 @@ func (cgb *CloudGroupBy) Float64X(ctx context.Context) float64 {
 
 // Bools returns list of bools from group-by.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Bools(ctx context.Context) ([]bool, error) {
+func (cgb *CacheGroupBy) Bools(ctx context.Context) ([]bool, error) {
 	if len(cgb.fields) > 1 {
-		return nil, errors.New("ent: CloudGroupBy.Bools is not achievable when grouping more than 1 field")
+		return nil, errors.New("ent: CacheGroupBy.Bools is not achievable when grouping more than 1 field")
 	}
 	var v []bool
 	if err := cgb.Scan(ctx, &v); err != nil {
@@ -626,7 +626,7 @@ func (cgb *CloudGroupBy) Bools(ctx context.Context) ([]bool, error) {
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (cgb *CloudGroupBy) BoolsX(ctx context.Context) []bool {
+func (cgb *CacheGroupBy) BoolsX(ctx context.Context) []bool {
 	v, err := cgb.Bools(ctx)
 	if err != nil {
 		panic(err)
@@ -636,7 +636,7 @@ func (cgb *CloudGroupBy) BoolsX(ctx context.Context) []bool {
 
 // Bool returns a single bool from a group-by query.
 // It is only allowed when executing a group-by query with one field.
-func (cgb *CloudGroupBy) Bool(ctx context.Context) (_ bool, err error) {
+func (cgb *CacheGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
 	if v, err = cgb.Bools(ctx); err != nil {
 		return
@@ -645,15 +645,15 @@ func (cgb *CloudGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudGroupBy.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheGroupBy.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (cgb *CloudGroupBy) BoolX(ctx context.Context) bool {
+func (cgb *CacheGroupBy) BoolX(ctx context.Context) bool {
 	v, err := cgb.Bool(ctx)
 	if err != nil {
 		panic(err)
@@ -661,9 +661,9 @@ func (cgb *CloudGroupBy) BoolX(ctx context.Context) bool {
 	return v
 }
 
-func (cgb *CloudGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (cgb *CacheGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	for _, f := range cgb.fields {
-		if !cloud.ValidColumn(f) {
+		if !cache.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
 		}
 	}
@@ -680,7 +680,7 @@ func (cgb *CloudGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	return sql.ScanSlice(rows, v)
 }
 
-func (cgb *CloudGroupBy) sqlQuery() *sql.Selector {
+func (cgb *CacheGroupBy) sqlQuery() *sql.Selector {
 	selector := cgb.sql.Select()
 	aggregation := make([]string, 0, len(cgb.fns))
 	for _, fn := range cgb.fns {
@@ -699,33 +699,33 @@ func (cgb *CloudGroupBy) sqlQuery() *sql.Selector {
 	return selector.GroupBy(selector.Columns(cgb.fields...)...)
 }
 
-// CloudSelect is the builder for selecting fields of Cloud entities.
-type CloudSelect struct {
-	*CloudQuery
+// CacheSelect is the builder for selecting fields of Cache entities.
+type CacheSelect struct {
+	*CacheQuery
 	// intermediate query (i.e. traversal path).
 	sql *sql.Selector
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (cs *CloudSelect) Scan(ctx context.Context, v interface{}) error {
+func (cs *CacheSelect) Scan(ctx context.Context, v interface{}) error {
 	if err := cs.prepareQuery(ctx); err != nil {
 		return err
 	}
-	cs.sql = cs.CloudQuery.sqlQuery(ctx)
+	cs.sql = cs.CacheQuery.sqlQuery(ctx)
 	return cs.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (cs *CloudSelect) ScanX(ctx context.Context, v interface{}) {
+func (cs *CacheSelect) ScanX(ctx context.Context, v interface{}) {
 	if err := cs.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Strings(ctx context.Context) ([]string, error) {
+func (cs *CacheSelect) Strings(ctx context.Context) ([]string, error) {
 	if len(cs.fields) > 1 {
-		return nil, errors.New("ent: CloudSelect.Strings is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: CacheSelect.Strings is not achievable when selecting more than 1 field")
 	}
 	var v []string
 	if err := cs.Scan(ctx, &v); err != nil {
@@ -735,7 +735,7 @@ func (cs *CloudSelect) Strings(ctx context.Context) ([]string, error) {
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (cs *CloudSelect) StringsX(ctx context.Context) []string {
+func (cs *CacheSelect) StringsX(ctx context.Context) []string {
 	v, err := cs.Strings(ctx)
 	if err != nil {
 		panic(err)
@@ -744,7 +744,7 @@ func (cs *CloudSelect) StringsX(ctx context.Context) []string {
 }
 
 // String returns a single string from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) String(ctx context.Context) (_ string, err error) {
+func (cs *CacheSelect) String(ctx context.Context) (_ string, err error) {
 	var v []string
 	if v, err = cs.Strings(ctx); err != nil {
 		return
@@ -753,15 +753,15 @@ func (cs *CloudSelect) String(ctx context.Context) (_ string, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudSelect.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheSelect.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (cs *CloudSelect) StringX(ctx context.Context) string {
+func (cs *CacheSelect) StringX(ctx context.Context) string {
 	v, err := cs.String(ctx)
 	if err != nil {
 		panic(err)
@@ -770,9 +770,9 @@ func (cs *CloudSelect) StringX(ctx context.Context) string {
 }
 
 // Ints returns list of ints from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Ints(ctx context.Context) ([]int, error) {
+func (cs *CacheSelect) Ints(ctx context.Context) ([]int, error) {
 	if len(cs.fields) > 1 {
-		return nil, errors.New("ent: CloudSelect.Ints is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: CacheSelect.Ints is not achievable when selecting more than 1 field")
 	}
 	var v []int
 	if err := cs.Scan(ctx, &v); err != nil {
@@ -782,7 +782,7 @@ func (cs *CloudSelect) Ints(ctx context.Context) ([]int, error) {
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (cs *CloudSelect) IntsX(ctx context.Context) []int {
+func (cs *CacheSelect) IntsX(ctx context.Context) []int {
 	v, err := cs.Ints(ctx)
 	if err != nil {
 		panic(err)
@@ -791,7 +791,7 @@ func (cs *CloudSelect) IntsX(ctx context.Context) []int {
 }
 
 // Int returns a single int from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Int(ctx context.Context) (_ int, err error) {
+func (cs *CacheSelect) Int(ctx context.Context) (_ int, err error) {
 	var v []int
 	if v, err = cs.Ints(ctx); err != nil {
 		return
@@ -800,15 +800,15 @@ func (cs *CloudSelect) Int(ctx context.Context) (_ int, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudSelect.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheSelect.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (cs *CloudSelect) IntX(ctx context.Context) int {
+func (cs *CacheSelect) IntX(ctx context.Context) int {
 	v, err := cs.Int(ctx)
 	if err != nil {
 		panic(err)
@@ -817,9 +817,9 @@ func (cs *CloudSelect) IntX(ctx context.Context) int {
 }
 
 // Float64s returns list of float64s from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Float64s(ctx context.Context) ([]float64, error) {
+func (cs *CacheSelect) Float64s(ctx context.Context) ([]float64, error) {
 	if len(cs.fields) > 1 {
-		return nil, errors.New("ent: CloudSelect.Float64s is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: CacheSelect.Float64s is not achievable when selecting more than 1 field")
 	}
 	var v []float64
 	if err := cs.Scan(ctx, &v); err != nil {
@@ -829,7 +829,7 @@ func (cs *CloudSelect) Float64s(ctx context.Context) ([]float64, error) {
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (cs *CloudSelect) Float64sX(ctx context.Context) []float64 {
+func (cs *CacheSelect) Float64sX(ctx context.Context) []float64 {
 	v, err := cs.Float64s(ctx)
 	if err != nil {
 		panic(err)
@@ -838,7 +838,7 @@ func (cs *CloudSelect) Float64sX(ctx context.Context) []float64 {
 }
 
 // Float64 returns a single float64 from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Float64(ctx context.Context) (_ float64, err error) {
+func (cs *CacheSelect) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
 	if v, err = cs.Float64s(ctx); err != nil {
 		return
@@ -847,15 +847,15 @@ func (cs *CloudSelect) Float64(ctx context.Context) (_ float64, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudSelect.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheSelect.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (cs *CloudSelect) Float64X(ctx context.Context) float64 {
+func (cs *CacheSelect) Float64X(ctx context.Context) float64 {
 	v, err := cs.Float64(ctx)
 	if err != nil {
 		panic(err)
@@ -864,9 +864,9 @@ func (cs *CloudSelect) Float64X(ctx context.Context) float64 {
 }
 
 // Bools returns list of bools from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Bools(ctx context.Context) ([]bool, error) {
+func (cs *CacheSelect) Bools(ctx context.Context) ([]bool, error) {
 	if len(cs.fields) > 1 {
-		return nil, errors.New("ent: CloudSelect.Bools is not achievable when selecting more than 1 field")
+		return nil, errors.New("ent: CacheSelect.Bools is not achievable when selecting more than 1 field")
 	}
 	var v []bool
 	if err := cs.Scan(ctx, &v); err != nil {
@@ -876,7 +876,7 @@ func (cs *CloudSelect) Bools(ctx context.Context) ([]bool, error) {
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (cs *CloudSelect) BoolsX(ctx context.Context) []bool {
+func (cs *CacheSelect) BoolsX(ctx context.Context) []bool {
 	v, err := cs.Bools(ctx)
 	if err != nil {
 		panic(err)
@@ -885,7 +885,7 @@ func (cs *CloudSelect) BoolsX(ctx context.Context) []bool {
 }
 
 // Bool returns a single bool from a selector. It is only allowed when selecting one field.
-func (cs *CloudSelect) Bool(ctx context.Context) (_ bool, err error) {
+func (cs *CacheSelect) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
 	if v, err = cs.Bools(ctx); err != nil {
 		return
@@ -894,15 +894,15 @@ func (cs *CloudSelect) Bool(ctx context.Context) (_ bool, err error) {
 	case 1:
 		return v[0], nil
 	case 0:
-		err = &NotFoundError{cloud.Label}
+		err = &NotFoundError{cache.Label}
 	default:
-		err = fmt.Errorf("ent: CloudSelect.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: CacheSelect.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (cs *CloudSelect) BoolX(ctx context.Context) bool {
+func (cs *CacheSelect) BoolX(ctx context.Context) bool {
 	v, err := cs.Bool(ctx)
 	if err != nil {
 		panic(err)
@@ -910,7 +910,7 @@ func (cs *CloudSelect) BoolX(ctx context.Context) bool {
 	return v
 }
 
-func (cs *CloudSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (cs *CacheSelect) sqlScan(ctx context.Context, v interface{}) error {
 	rows := &sql.Rows{}
 	query, args := cs.sql.Query()
 	if err := cs.driver.Query(ctx, query, args, rows); err != nil {

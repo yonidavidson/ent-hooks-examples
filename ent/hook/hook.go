@@ -9,15 +9,15 @@ import (
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent"
 )
 
-// The CloudFunc type is an adapter to allow the use of ordinary
-// function as Cloud mutator.
-type CloudFunc func(context.Context, *ent.CloudMutation) (ent.Value, error)
+// The CacheFunc type is an adapter to allow the use of ordinary
+// function as Cache mutator.
+type CacheFunc func(context.Context, *ent.CacheMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f CloudFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.CloudMutation)
+func (f CacheFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.CacheMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CloudMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CacheMutation", m)
 	}
 	return f(ctx, mv)
 }

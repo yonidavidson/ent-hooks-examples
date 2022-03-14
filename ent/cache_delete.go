@@ -9,25 +9,25 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
 )
 
-// CloudDelete is the builder for deleting a Cloud entity.
-type CloudDelete struct {
+// CacheDelete is the builder for deleting a Cache entity.
+type CacheDelete struct {
 	config
 	hooks    []Hook
-	mutation *CloudMutation
+	mutation *CacheMutation
 }
 
-// Where appends a list predicates to the CloudDelete builder.
-func (cd *CloudDelete) Where(ps ...predicate.Cloud) *CloudDelete {
+// Where appends a list predicates to the CacheDelete builder.
+func (cd *CacheDelete) Where(ps ...predicate.Cache) *CacheDelete {
 	cd.mutation.Where(ps...)
 	return cd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (cd *CloudDelete) Exec(ctx context.Context) (int, error) {
+func (cd *CacheDelete) Exec(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
@@ -36,7 +36,7 @@ func (cd *CloudDelete) Exec(ctx context.Context) (int, error) {
 		affected, err = cd.sqlExec(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*CloudMutation)
+			mutation, ok := m.(*CacheMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -59,7 +59,7 @@ func (cd *CloudDelete) Exec(ctx context.Context) (int, error) {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cd *CloudDelete) ExecX(ctx context.Context) int {
+func (cd *CacheDelete) ExecX(ctx context.Context) int {
 	n, err := cd.Exec(ctx)
 	if err != nil {
 		panic(err)
@@ -67,13 +67,13 @@ func (cd *CloudDelete) ExecX(ctx context.Context) int {
 	return n
 }
 
-func (cd *CloudDelete) sqlExec(ctx context.Context) (int, error) {
+func (cd *CacheDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := &sqlgraph.DeleteSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table: cloud.Table,
+			Table: cache.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: cloud.FieldID,
+				Column: cache.FieldID,
 			},
 		},
 	}
@@ -87,25 +87,25 @@ func (cd *CloudDelete) sqlExec(ctx context.Context) (int, error) {
 	return sqlgraph.DeleteNodes(ctx, cd.driver, _spec)
 }
 
-// CloudDeleteOne is the builder for deleting a single Cloud entity.
-type CloudDeleteOne struct {
-	cd *CloudDelete
+// CacheDeleteOne is the builder for deleting a single Cache entity.
+type CacheDeleteOne struct {
+	cd *CacheDelete
 }
 
 // Exec executes the deletion query.
-func (cdo *CloudDeleteOne) Exec(ctx context.Context) error {
+func (cdo *CacheDeleteOne) Exec(ctx context.Context) error {
 	n, err := cdo.cd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{cloud.Label}
+		return &NotFoundError{cache.Label}
 	default:
 		return nil
 	}
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cdo *CloudDeleteOne) ExecX(ctx context.Context) {
+func (cdo *CacheDeleteOne) ExecX(ctx context.Context) {
 	cdo.cd.ExecX(ctx)
 }

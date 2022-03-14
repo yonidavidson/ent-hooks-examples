@@ -12,7 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
 	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
@@ -29,7 +29,7 @@ type UserQuery struct {
 	predicates []predicate.User
 	// eager-loading edges.
 	withPets  *DogQuery
-	withCloud *CloudQuery
+	withCache *CacheQuery
 	withFKs   bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -89,9 +89,9 @@ func (uq *UserQuery) QueryPets() *DogQuery {
 	return query
 }
 
-// QueryCloud chains the current query on the "cloud" edge.
-func (uq *UserQuery) QueryCloud() *CloudQuery {
-	query := &CloudQuery{config: uq.config}
+// QueryCache chains the current query on the "cache" edge.
+func (uq *UserQuery) QueryCache() *CacheQuery {
+	query := &CacheQuery{config: uq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := uq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -102,8 +102,8 @@ func (uq *UserQuery) QueryCloud() *CloudQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(cloud.Table, cloud.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, user.CloudTable, user.CloudColumn),
+			sqlgraph.To(cache.Table, cache.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, user.CacheTable, user.CacheColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,7 +293,7 @@ func (uq *UserQuery) Clone() *UserQuery {
 		order:      append([]OrderFunc{}, uq.order...),
 		predicates: append([]predicate.User{}, uq.predicates...),
 		withPets:   uq.withPets.Clone(),
-		withCloud:  uq.withCloud.Clone(),
+		withCache:  uq.withCache.Clone(),
 		// clone intermediate query.
 		sql:    uq.sql.Clone(),
 		path:   uq.path,
@@ -312,14 +312,14 @@ func (uq *UserQuery) WithPets(opts ...func(*DogQuery)) *UserQuery {
 	return uq
 }
 
-// WithCloud tells the query-builder to eager-load the nodes that are connected to
-// the "cloud" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithCloud(opts ...func(*CloudQuery)) *UserQuery {
-	query := &CloudQuery{config: uq.config}
+// WithCache tells the query-builder to eager-load the nodes that are connected to
+// the "cache" edge. The optional arguments are used to configure the query builder of the edge.
+func (uq *UserQuery) WithCache(opts ...func(*CacheQuery)) *UserQuery {
+	query := &CacheQuery{config: uq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	uq.withCloud = query
+	uq.withCache = query
 	return uq
 }
 
@@ -391,10 +391,10 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		_spec       = uq.querySpec()
 		loadedTypes = [2]bool{
 			uq.withPets != nil,
-			uq.withCloud != nil,
+			uq.withCache != nil,
 		}
 	)
-	if uq.withCloud != nil {
+	if uq.withCache != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -449,20 +449,20 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		}
 	}
 
-	if query := uq.withCloud; query != nil {
+	if query := uq.withCache; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*User)
 		for i := range nodes {
-			if nodes[i].user_cloud == nil {
+			if nodes[i].user_cache == nil {
 				continue
 			}
-			fk := *nodes[i].user_cloud
+			fk := *nodes[i].user_cache
 			if _, ok := nodeids[fk]; !ok {
 				ids = append(ids, fk)
 			}
 			nodeids[fk] = append(nodeids[fk], nodes[i])
 		}
-		query.Where(cloud.IDIn(ids...))
+		query.Where(cache.IDIn(ids...))
 		neighbors, err := query.All(ctx)
 		if err != nil {
 			return nil, err
@@ -470,10 +470,10 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_cloud" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "user_cache" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Cloud = n
+				nodes[i].Edges.Cache = n
 			}
 		}
 	}

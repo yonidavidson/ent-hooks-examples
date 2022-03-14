@@ -9,32 +9,32 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
+	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cache"
 )
 
-// CloudCreate is the builder for creating a Cloud entity.
-type CloudCreate struct {
+// CacheCreate is the builder for creating a Cache entity.
+type CacheCreate struct {
 	config
-	mutation *CloudMutation
+	mutation *CacheMutation
 	hooks    []Hook
 }
 
 // SetWalks sets the "walks" field.
-func (cc *CloudCreate) SetWalks(i int) *CloudCreate {
+func (cc *CacheCreate) SetWalks(i int) *CacheCreate {
 	cc.mutation.SetWalks(i)
 	return cc
 }
 
-// Mutation returns the CloudMutation object of the builder.
-func (cc *CloudCreate) Mutation() *CloudMutation {
+// Mutation returns the CacheMutation object of the builder.
+func (cc *CacheCreate) Mutation() *CacheMutation {
 	return cc.mutation
 }
 
-// Save creates the Cloud in the database.
-func (cc *CloudCreate) Save(ctx context.Context) (*Cloud, error) {
+// Save creates the Cache in the database.
+func (cc *CacheCreate) Save(ctx context.Context) (*Cache, error) {
 	var (
 		err  error
-		node *Cloud
+		node *Cache
 	)
 	if len(cc.hooks) == 0 {
 		if err = cc.check(); err != nil {
@@ -43,7 +43,7 @@ func (cc *CloudCreate) Save(ctx context.Context) (*Cloud, error) {
 		node, err = cc.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*CloudMutation)
+			mutation, ok := m.(*CacheMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -72,7 +72,7 @@ func (cc *CloudCreate) Save(ctx context.Context) (*Cloud, error) {
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (cc *CloudCreate) SaveX(ctx context.Context) *Cloud {
+func (cc *CacheCreate) SaveX(ctx context.Context) *Cache {
 	v, err := cc.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -81,27 +81,27 @@ func (cc *CloudCreate) SaveX(ctx context.Context) *Cloud {
 }
 
 // Exec executes the query.
-func (cc *CloudCreate) Exec(ctx context.Context) error {
+func (cc *CacheCreate) Exec(ctx context.Context) error {
 	_, err := cc.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cc *CloudCreate) ExecX(ctx context.Context) {
+func (cc *CacheCreate) ExecX(ctx context.Context) {
 	if err := cc.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (cc *CloudCreate) check() error {
+func (cc *CacheCreate) check() error {
 	if _, ok := cc.mutation.Walks(); !ok {
-		return &ValidationError{Name: "walks", err: errors.New(`ent: missing required field "Cloud.walks"`)}
+		return &ValidationError{Name: "walks", err: errors.New(`ent: missing required field "Cache.walks"`)}
 	}
 	return nil
 }
 
-func (cc *CloudCreate) sqlSave(ctx context.Context) (*Cloud, error) {
+func (cc *CacheCreate) sqlSave(ctx context.Context) (*Cache, error) {
 	_node, _spec := cc.createSpec()
 	if err := sqlgraph.CreateNode(ctx, cc.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
@@ -114,14 +114,14 @@ func (cc *CloudCreate) sqlSave(ctx context.Context) (*Cloud, error) {
 	return _node, nil
 }
 
-func (cc *CloudCreate) createSpec() (*Cloud, *sqlgraph.CreateSpec) {
+func (cc *CacheCreate) createSpec() (*Cache, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Cloud{config: cc.config}
+		_node = &Cache{config: cc.config}
 		_spec = &sqlgraph.CreateSpec{
-			Table: cloud.Table,
+			Table: cache.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: cloud.FieldID,
+				Column: cache.FieldID,
 			},
 		}
 	)
@@ -129,29 +129,29 @@ func (cc *CloudCreate) createSpec() (*Cloud, *sqlgraph.CreateSpec) {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: cloud.FieldWalks,
+			Column: cache.FieldWalks,
 		})
 		_node.Walks = value
 	}
 	return _node, _spec
 }
 
-// CloudCreateBulk is the builder for creating many Cloud entities in bulk.
-type CloudCreateBulk struct {
+// CacheCreateBulk is the builder for creating many Cache entities in bulk.
+type CacheCreateBulk struct {
 	config
-	builders []*CloudCreate
+	builders []*CacheCreate
 }
 
-// Save creates the Cloud entities in the database.
-func (ccb *CloudCreateBulk) Save(ctx context.Context) ([]*Cloud, error) {
+// Save creates the Cache entities in the database.
+func (ccb *CacheCreateBulk) Save(ctx context.Context) ([]*Cache, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(ccb.builders))
-	nodes := make([]*Cloud, len(ccb.builders))
+	nodes := make([]*Cache, len(ccb.builders))
 	mutators := make([]Mutator, len(ccb.builders))
 	for i := range ccb.builders {
 		func(i int, root context.Context) {
 			builder := ccb.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*CloudMutation)
+				mutation, ok := m.(*CacheMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -198,7 +198,7 @@ func (ccb *CloudCreateBulk) Save(ctx context.Context) ([]*Cloud, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (ccb *CloudCreateBulk) SaveX(ctx context.Context) []*Cloud {
+func (ccb *CacheCreateBulk) SaveX(ctx context.Context) []*Cache {
 	v, err := ccb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -207,13 +207,13 @@ func (ccb *CloudCreateBulk) SaveX(ctx context.Context) []*Cloud {
 }
 
 // Exec executes the query.
-func (ccb *CloudCreateBulk) Exec(ctx context.Context) error {
+func (ccb *CacheCreateBulk) Exec(ctx context.Context) error {
 	_, err := ccb.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ccb *CloudCreateBulk) ExecX(ctx context.Context) {
+func (ccb *CacheCreateBulk) ExecX(ctx context.Context) {
 	if err := ccb.Exec(ctx); err != nil {
 		panic(err)
 	}

@@ -21,12 +21,12 @@ type config struct {
 	log func(...interface{})
 	// hooks to execute on mutations.
 	hooks       *hooks
-	CloudSyncer hook.Syncer
+	CacheSyncer hook.Syncer
 }
 
 // hooks per client, for fast access.
 type hooks struct {
-	Cloud []ent.Hook
+	Cache []ent.Hook
 	Dog   []ent.Hook
 	User  []ent.Hook
 }
@@ -62,9 +62,9 @@ func Driver(driver dialect.Driver) Option {
 	}
 }
 
-// CloudSyncer configures the CloudSyncer.
-func CloudSyncer(v hook.Syncer) Option {
+// CacheSyncer configures the CacheSyncer.
+func CacheSyncer(v hook.Syncer) Option {
 	return func(c *config) {
-		c.CloudSyncer = v
+		c.CacheSyncer = v
 	}
 }

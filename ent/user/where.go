@@ -237,25 +237,25 @@ func HasPetsWith(preds ...predicate.Dog) predicate.User {
 	})
 }
 
-// HasCloud applies the HasEdge predicate on the "cloud" edge.
-func HasCloud() predicate.User {
+// HasCache applies the HasEdge predicate on the "cache" edge.
+func HasCache() predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CloudTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, CloudTable, CloudColumn),
+			sqlgraph.To(CacheTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, CacheTable, CacheColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCloudWith applies the HasEdge predicate on the "cloud" edge with a given conditions (other predicates).
-func HasCloudWith(preds ...predicate.Cloud) predicate.User {
+// HasCacheWith applies the HasEdge predicate on the "cache" edge with a given conditions (other predicates).
+func HasCacheWith(preds ...predicate.Cache) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CloudInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, CloudTable, CloudColumn),
+			sqlgraph.To(CacheInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, CacheTable, CacheColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
