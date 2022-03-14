@@ -1,2 +1,2 @@
-# ent-long-side-effect-hooks
-Example repo for long side effects in hooks
+# ent-hooks-examples
+Example repo for hooks examples in Ent.

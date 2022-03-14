@@ -79,7 +79,7 @@ func validateName(next ent.Mutator) ent.Mutator {
 		if !ok {
 			return next.Mutate(ctx, m)
 		}
-		if owner.Name[0:1] == dn[0:1] {
+		if owner.Name[0:2] == dn[0:2] {
 			return nil, errors.New("invalid dog name")
 		}
 		return next.Mutate(ctx, m)

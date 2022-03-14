@@ -37,7 +37,7 @@ func (s *Syncer) Start(ctx context.Context, c *ent.Client) {
 }
 
 // Sync implements a request for syncing the specific cache ID.
-func (s *Syncer) Sync(ctx context.Context, cloudID int) {
+func (s *Syncer) Sync(ctx context.Context, cacheID int) {
 	s.Mutex.Lock()
 	defer s.Mutex.Unlock()
 	if !s.enabled {
@@ -46,12 +46,12 @@ func (s *Syncer) Sync(ctx context.Context, cloudID int) {
 	s.wg.Add(1)
 	go func() {
 		defer s.wg.Done()
-		fmt.Printf("start sync for id %d\n", cloudID)
+		fmt.Printf("start sync for id %d\n", cacheID)
 		time.Sleep(2 * time.Second)
 		rs := rand.NewSource(time.Now().UnixNano())
 		r := rand.New(rs)
-		if err := s.client.Cache.UpdateOneID(cloudID).SetWalks(r.Intn(100)).Exec(s.ctx); err != nil {
-			fmt.Printf("cloud/syncer: failed to sync %d, %e\n", cloudID, err)
+		if err := s.client.Cache.UpdateOneID(cacheID).SetWalks(r.Intn(100)).Exec(s.ctx); err != nil {
+			fmt.Printf("cache/syncer: failed to sync %d, %e\n", cacheID, err)
 		}
 	}()
 }
