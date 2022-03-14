@@ -10,10 +10,10 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
+	"github.com/yonidavidson/ent-hooks-examples/ent/cache"
+	"github.com/yonidavidson/ent-hooks-examples/ent/dog"
+	"github.com/yonidavidson/ent-hooks-examples/ent/predicate"
+	"github.com/yonidavidson/ent-hooks-examples/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.
@@ -50,23 +50,23 @@ func (uu *UserUpdate) AddPets(d ...*Dog) *UserUpdate {
 	return uu.AddPetIDs(ids...)
 }
 
-// SetCloudID sets the "cloud" edge to the Cloud entity by ID.
-func (uu *UserUpdate) SetCloudID(id int) *UserUpdate {
-	uu.mutation.SetCloudID(id)
+// SetCacheID sets the "cache" edge to the Cache entity by ID.
+func (uu *UserUpdate) SetCacheID(id int) *UserUpdate {
+	uu.mutation.SetCacheID(id)
 	return uu
 }
 
-// SetNillableCloudID sets the "cloud" edge to the Cloud entity by ID if the given value is not nil.
-func (uu *UserUpdate) SetNillableCloudID(id *int) *UserUpdate {
+// SetNillableCacheID sets the "cache" edge to the Cache entity by ID if the given value is not nil.
+func (uu *UserUpdate) SetNillableCacheID(id *int) *UserUpdate {
 	if id != nil {
-		uu = uu.SetCloudID(*id)
+		uu = uu.SetCacheID(*id)
 	}
 	return uu
 }
 
-// SetCloud sets the "cloud" edge to the Cloud entity.
-func (uu *UserUpdate) SetCloud(c *Cloud) *UserUpdate {
-	return uu.SetCloudID(c.ID)
+// SetCache sets the "cache" edge to the Cache entity.
+func (uu *UserUpdate) SetCache(c *Cache) *UserUpdate {
+	return uu.SetCacheID(c.ID)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -95,9 +95,9 @@ func (uu *UserUpdate) RemovePets(d ...*Dog) *UserUpdate {
 	return uu.RemovePetIDs(ids...)
 }
 
-// ClearCloud clears the "cloud" edge to the Cloud entity.
-func (uu *UserUpdate) ClearCloud() *UserUpdate {
-	uu.mutation.ClearCloud()
+// ClearCache clears the "cache" edge to the Cache entity.
+func (uu *UserUpdate) ClearCache() *UserUpdate {
+	uu.mutation.ClearCache()
 	return uu
 }
 
@@ -250,33 +250,33 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uu.mutation.CloudCleared() {
+	if uu.mutation.CacheCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   user.CloudTable,
-			Columns: []string{user.CloudColumn},
+			Table:   user.CacheTable,
+			Columns: []string{user.CacheColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: cloud.FieldID,
+					Column: cache.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uu.mutation.CloudIDs(); len(nodes) > 0 {
+	if nodes := uu.mutation.CacheIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   user.CloudTable,
-			Columns: []string{user.CloudColumn},
+			Table:   user.CacheTable,
+			Columns: []string{user.CacheColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: cloud.FieldID,
+					Column: cache.FieldID,
 				},
 			},
 		}
@@ -325,23 +325,23 @@ func (uuo *UserUpdateOne) AddPets(d ...*Dog) *UserUpdateOne {
 	return uuo.AddPetIDs(ids...)
 }
 
-// SetCloudID sets the "cloud" edge to the Cloud entity by ID.
-func (uuo *UserUpdateOne) SetCloudID(id int) *UserUpdateOne {
-	uuo.mutation.SetCloudID(id)
+// SetCacheID sets the "cache" edge to the Cache entity by ID.
+func (uuo *UserUpdateOne) SetCacheID(id int) *UserUpdateOne {
+	uuo.mutation.SetCacheID(id)
 	return uuo
 }
 
-// SetNillableCloudID sets the "cloud" edge to the Cloud entity by ID if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCloudID(id *int) *UserUpdateOne {
+// SetNillableCacheID sets the "cache" edge to the Cache entity by ID if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCacheID(id *int) *UserUpdateOne {
 	if id != nil {
-		uuo = uuo.SetCloudID(*id)
+		uuo = uuo.SetCacheID(*id)
 	}
 	return uuo
 }
 
-// SetCloud sets the "cloud" edge to the Cloud entity.
-func (uuo *UserUpdateOne) SetCloud(c *Cloud) *UserUpdateOne {
-	return uuo.SetCloudID(c.ID)
+// SetCache sets the "cache" edge to the Cache entity.
+func (uuo *UserUpdateOne) SetCache(c *Cache) *UserUpdateOne {
+	return uuo.SetCacheID(c.ID)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -370,9 +370,9 @@ func (uuo *UserUpdateOne) RemovePets(d ...*Dog) *UserUpdateOne {
 	return uuo.RemovePetIDs(ids...)
 }
 
-// ClearCloud clears the "cloud" edge to the Cloud entity.
-func (uuo *UserUpdateOne) ClearCloud() *UserUpdateOne {
-	uuo.mutation.ClearCloud()
+// ClearCache clears the "cache" edge to the Cache entity.
+func (uuo *UserUpdateOne) ClearCache() *UserUpdateOne {
+	uuo.mutation.ClearCache()
 	return uuo
 }
 
@@ -549,33 +549,33 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if uuo.mutation.CloudCleared() {
+	if uuo.mutation.CacheCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   user.CloudTable,
-			Columns: []string{user.CloudColumn},
+			Table:   user.CacheTable,
+			Columns: []string{user.CacheColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: cloud.FieldID,
+					Column: cache.FieldID,
 				},
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := uuo.mutation.CloudIDs(); len(nodes) > 0 {
+	if nodes := uuo.mutation.CacheIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   user.CloudTable,
-			Columns: []string{user.CloudColumn},
+			Table:   user.CacheTable,
+			Columns: []string{user.CacheColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-					Column: cloud.FieldID,
+					Column: cache.FieldID,
 				},
 			},
 		}

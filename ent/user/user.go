@@ -2,10 +2,6 @@
 
 package user
 
-import (
-	"entgo.io/ent"
-)
-
 const (
 	// Label holds the string label denoting the user type in the database.
 	Label = "user"
@@ -15,8 +11,8 @@ const (
 	FieldName = "name"
 	// EdgePets holds the string denoting the pets edge name in mutations.
 	EdgePets = "pets"
-	// EdgeCloud holds the string denoting the cloud edge name in mutations.
-	EdgeCloud = "cloud"
+	// EdgeCache holds the string denoting the cache edge name in mutations.
+	EdgeCache = "cache"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 	// PetsTable is the table that holds the pets relation/edge.
@@ -26,13 +22,13 @@ const (
 	PetsInverseTable = "dogs"
 	// PetsColumn is the table column denoting the pets relation/edge.
 	PetsColumn = "user_pets"
-	// CloudTable is the table that holds the cloud relation/edge.
-	CloudTable = "users"
-	// CloudInverseTable is the table name for the Cloud entity.
-	// It exists in this package in order to avoid circular dependency with the "cloud" package.
-	CloudInverseTable = "clouds"
-	// CloudColumn is the table column denoting the cloud relation/edge.
-	CloudColumn = "user_cloud"
+	// CacheTable is the table that holds the cache relation/edge.
+	CacheTable = "users"
+	// CacheInverseTable is the table name for the Cache entity.
+	// It exists in this package in order to avoid circular dependency with the "cache" package.
+	CacheInverseTable = "caches"
+	// CacheColumn is the table column denoting the cache relation/edge.
+	CacheColumn = "user_cache"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -44,7 +40,7 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the "users"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
-	"user_cloud",
+	"user_cache",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -62,14 +58,7 @@ func ValidColumn(column string) bool {
 	return false
 }
 
-// Note that the variables below are initialized by the runtime
-// package on the initialization of the application. Therefore,
-// it should be imported in the main as follows:
-//
-//	import _ "github.com/yonidavidson/ent-side-effect-hooks-example/ent/runtime"
-//
 var (
-	Hooks [1]ent.Hook
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 )

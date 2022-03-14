@@ -12,8 +12,8 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// Cloud is the client for interacting with the Cloud builders.
-	Cloud *CloudClient
+	// Cache is the client for interacting with the Cache builders.
+	Cache *CacheClient
 	// Dog is the client for interacting with the Dog builders.
 	Dog *DogClient
 	// User is the client for interacting with the User builders.
@@ -153,7 +153,7 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.Cloud = NewCloudClient(tx.config)
+	tx.Cache = NewCacheClient(tx.config)
 	tx.Dog = NewDogClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
@@ -165,7 +165,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Cloud.QueryXXX(), the query will be executed
+// applies a query, for example: Cache.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

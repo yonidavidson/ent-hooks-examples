@@ -2,4 +2,4 @@
 
 package ent
 
-// The schema-stitching logic is generated in github.com/yonidavidson/ent-side-effect-hooks-example/ent/runtime/runtime.go
+// The schema-stitching logic is generated in github.com/yonidavidson/ent-hooks-examples/ent/runtime/runtime.go

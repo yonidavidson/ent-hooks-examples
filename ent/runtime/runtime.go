@@ -3,9 +3,9 @@
 package runtime
 
 import (
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/schema"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
+	"github.com/yonidavidson/ent-hooks-examples/ent/dog"
+	"github.com/yonidavidson/ent-hooks-examples/ent/schema"
+	"github.com/yonidavidson/ent-hooks-examples/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -20,8 +20,6 @@ func init() {
 	dogDescName := dogFields[0].Descriptor()
 	// dog.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	dog.NameValidator = dogDescName.Validators[0].(func(string) error)
-	userHooks := schema.User{}.Hooks()
-	user.Hooks[0] = userHooks[0]
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescName is the schema descriptor for name field.

@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
+	"github.com/yonidavidson/ent-hooks-examples/ent/dog"
+	"github.com/yonidavidson/ent-hooks-examples/ent/predicate"
 )
 
 // DogDelete is the builder for deleting a Dog entity.

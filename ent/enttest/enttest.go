@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent"
+	"github.com/yonidavidson/ent-hooks-examples/ent"
 	// required by schema hooks.
-	_ "github.com/yonidavidson/ent-side-effect-hooks-example/ent/runtime"
+	_ "github.com/yonidavidson/ent-hooks-examples/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

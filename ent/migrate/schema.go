@@ -8,16 +8,16 @@ import (
 )
 
 var (
-	// CloudsColumns holds the columns for the "clouds" table.
-	CloudsColumns = []*schema.Column{
+	// CachesColumns holds the columns for the "caches" table.
+	CachesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "walks", Type: field.TypeInt},
 	}
-	// CloudsTable holds the schema information for the "clouds" table.
-	CloudsTable = &schema.Table{
-		Name:       "clouds",
-		Columns:    CloudsColumns,
-		PrimaryKey: []*schema.Column{CloudsColumns[0]},
+	// CachesTable holds the schema information for the "caches" table.
+	CachesTable = &schema.Table{
+		Name:       "caches",
+		Columns:    CachesColumns,
+		PrimaryKey: []*schema.Column{CachesColumns[0]},
 	}
 	// DogsColumns holds the columns for the "dogs" table.
 	DogsColumns = []*schema.Column{
@@ -43,7 +43,7 @@ var (
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "user_cloud", Type: field.TypeInt, Nullable: true},
+		{Name: "user_cache", Type: field.TypeInt, Nullable: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -52,16 +52,16 @@ var (
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "users_clouds_cloud",
+				Symbol:     "users_caches_cache",
 				Columns:    []*schema.Column{UsersColumns[2]},
-				RefColumns: []*schema.Column{CloudsColumns[0]},
+				RefColumns: []*schema.Column{CachesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		CloudsTable,
+		CachesTable,
 		DogsTable,
 		UsersTable,
 	}
@@ -69,5 +69,5 @@ var (
 
 func init() {
 	DogsTable.ForeignKeys[0].RefTable = UsersTable
-	UsersTable.ForeignKeys[0].RefTable = CloudsTable
+	UsersTable.ForeignKeys[0].RefTable = CachesTable
 }

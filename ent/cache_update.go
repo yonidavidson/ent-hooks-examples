@@ -10,43 +10,43 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
+	"github.com/yonidavidson/ent-hooks-examples/ent/cache"
+	"github.com/yonidavidson/ent-hooks-examples/ent/predicate"
 )
 
-// CloudUpdate is the builder for updating Cloud entities.
-type CloudUpdate struct {
+// CacheUpdate is the builder for updating Cache entities.
+type CacheUpdate struct {
 	config
 	hooks    []Hook
-	mutation *CloudMutation
+	mutation *CacheMutation
 }
 
-// Where appends a list predicates to the CloudUpdate builder.
-func (cu *CloudUpdate) Where(ps ...predicate.Cloud) *CloudUpdate {
+// Where appends a list predicates to the CacheUpdate builder.
+func (cu *CacheUpdate) Where(ps ...predicate.Cache) *CacheUpdate {
 	cu.mutation.Where(ps...)
 	return cu
 }
 
 // SetWalks sets the "walks" field.
-func (cu *CloudUpdate) SetWalks(i int) *CloudUpdate {
+func (cu *CacheUpdate) SetWalks(i int) *CacheUpdate {
 	cu.mutation.ResetWalks()
 	cu.mutation.SetWalks(i)
 	return cu
 }
 
 // AddWalks adds i to the "walks" field.
-func (cu *CloudUpdate) AddWalks(i int) *CloudUpdate {
+func (cu *CacheUpdate) AddWalks(i int) *CacheUpdate {
 	cu.mutation.AddWalks(i)
 	return cu
 }
 
-// Mutation returns the CloudMutation object of the builder.
-func (cu *CloudUpdate) Mutation() *CloudMutation {
+// Mutation returns the CacheMutation object of the builder.
+func (cu *CacheUpdate) Mutation() *CacheMutation {
 	return cu.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (cu *CloudUpdate) Save(ctx context.Context) (int, error) {
+func (cu *CacheUpdate) Save(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
@@ -55,7 +55,7 @@ func (cu *CloudUpdate) Save(ctx context.Context) (int, error) {
 		affected, err = cu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*CloudMutation)
+			mutation, ok := m.(*CacheMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -78,7 +78,7 @@ func (cu *CloudUpdate) Save(ctx context.Context) (int, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (cu *CloudUpdate) SaveX(ctx context.Context) int {
+func (cu *CacheUpdate) SaveX(ctx context.Context) int {
 	affected, err := cu.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -87,26 +87,26 @@ func (cu *CloudUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (cu *CloudUpdate) Exec(ctx context.Context) error {
+func (cu *CacheUpdate) Exec(ctx context.Context) error {
 	_, err := cu.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cu *CloudUpdate) ExecX(ctx context.Context) {
+func (cu *CacheUpdate) ExecX(ctx context.Context) {
 	if err := cu.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (cu *CloudUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (cu *CacheUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   cloud.Table,
-			Columns: cloud.Columns,
+			Table:   cache.Table,
+			Columns: cache.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: cloud.FieldID,
+				Column: cache.FieldID,
 			},
 		},
 	}
@@ -121,19 +121,19 @@ func (cu *CloudUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: cloud.FieldWalks,
+			Column: cache.FieldWalks,
 		})
 	}
 	if value, ok := cu.mutation.AddedWalks(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: cloud.FieldWalks,
+			Column: cache.FieldWalks,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{cloud.Label}
+			err = &NotFoundError{cache.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{err.Error(), err}
 		}
@@ -142,50 +142,50 @@ func (cu *CloudUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	return n, nil
 }
 
-// CloudUpdateOne is the builder for updating a single Cloud entity.
-type CloudUpdateOne struct {
+// CacheUpdateOne is the builder for updating a single Cache entity.
+type CacheUpdateOne struct {
 	config
 	fields   []string
 	hooks    []Hook
-	mutation *CloudMutation
+	mutation *CacheMutation
 }
 
 // SetWalks sets the "walks" field.
-func (cuo *CloudUpdateOne) SetWalks(i int) *CloudUpdateOne {
+func (cuo *CacheUpdateOne) SetWalks(i int) *CacheUpdateOne {
 	cuo.mutation.ResetWalks()
 	cuo.mutation.SetWalks(i)
 	return cuo
 }
 
 // AddWalks adds i to the "walks" field.
-func (cuo *CloudUpdateOne) AddWalks(i int) *CloudUpdateOne {
+func (cuo *CacheUpdateOne) AddWalks(i int) *CacheUpdateOne {
 	cuo.mutation.AddWalks(i)
 	return cuo
 }
 
-// Mutation returns the CloudMutation object of the builder.
-func (cuo *CloudUpdateOne) Mutation() *CloudMutation {
+// Mutation returns the CacheMutation object of the builder.
+func (cuo *CacheUpdateOne) Mutation() *CacheMutation {
 	return cuo.mutation
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (cuo *CloudUpdateOne) Select(field string, fields ...string) *CloudUpdateOne {
+func (cuo *CacheUpdateOne) Select(field string, fields ...string) *CacheUpdateOne {
 	cuo.fields = append([]string{field}, fields...)
 	return cuo
 }
 
-// Save executes the query and returns the updated Cloud entity.
-func (cuo *CloudUpdateOne) Save(ctx context.Context) (*Cloud, error) {
+// Save executes the query and returns the updated Cache entity.
+func (cuo *CacheUpdateOne) Save(ctx context.Context) (*Cache, error) {
 	var (
 		err  error
-		node *Cloud
+		node *Cache
 	)
 	if len(cuo.hooks) == 0 {
 		node, err = cuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*CloudMutation)
+			mutation, ok := m.(*CacheMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -208,7 +208,7 @@ func (cuo *CloudUpdateOne) Save(ctx context.Context) (*Cloud, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (cuo *CloudUpdateOne) SaveX(ctx context.Context) *Cloud {
+func (cuo *CacheUpdateOne) SaveX(ctx context.Context) *Cache {
 	node, err := cuo.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -217,42 +217,42 @@ func (cuo *CloudUpdateOne) SaveX(ctx context.Context) *Cloud {
 }
 
 // Exec executes the query on the entity.
-func (cuo *CloudUpdateOne) Exec(ctx context.Context) error {
+func (cuo *CacheUpdateOne) Exec(ctx context.Context) error {
 	_, err := cuo.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (cuo *CloudUpdateOne) ExecX(ctx context.Context) {
+func (cuo *CacheUpdateOne) ExecX(ctx context.Context) {
 	if err := cuo.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (cuo *CloudUpdateOne) sqlSave(ctx context.Context) (_node *Cloud, err error) {
+func (cuo *CacheUpdateOne) sqlSave(ctx context.Context) (_node *Cache, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   cloud.Table,
-			Columns: cloud.Columns,
+			Table:   cache.Table,
+			Columns: cache.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeInt,
-				Column: cloud.FieldID,
+				Column: cache.FieldID,
 			},
 		},
 	}
 	id, ok := cuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Cloud.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Cache.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := cuo.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, cloud.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, cache.FieldID)
 		for _, f := range fields {
-			if !cloud.ValidColumn(f) {
+			if !cache.ValidColumn(f) {
 				return nil, &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 			}
-			if f != cloud.FieldID {
+			if f != cache.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)
 			}
 		}
@@ -268,22 +268,22 @@ func (cuo *CloudUpdateOne) sqlSave(ctx context.Context) (_node *Cloud, err error
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: cloud.FieldWalks,
+			Column: cache.FieldWalks,
 		})
 	}
 	if value, ok := cuo.mutation.AddedWalks(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
 			Value:  value,
-			Column: cloud.FieldWalks,
+			Column: cache.FieldWalks,
 		})
 	}
-	_node = &Cloud{config: cuo.config}
+	_node = &Cache{config: cuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
 	if err = sqlgraph.UpdateNode(ctx, cuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{cloud.Label}
+			err = &NotFoundError{cache.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{err.Error(), err}
 		}

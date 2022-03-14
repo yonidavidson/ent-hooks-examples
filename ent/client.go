@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/migrate"
+	"github.com/yonidavidson/ent-hooks-examples/ent/migrate"
 
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
+	"github.com/yonidavidson/ent-hooks-examples/ent/cache"
+	"github.com/yonidavidson/ent-hooks-examples/ent/dog"
+	"github.com/yonidavidson/ent-hooks-examples/ent/user"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -23,8 +23,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Cloud is the client for interacting with the Cloud builders.
-	Cloud *CloudClient
+	// Cache is the client for interacting with the Cache builders.
+	Cache *CacheClient
 	// Dog is the client for interacting with the Dog builders.
 	Dog *DogClient
 	// User is the client for interacting with the User builders.
@@ -42,7 +42,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Cloud = NewCloudClient(c.config)
+	c.Cache = NewCacheClient(c.config)
 	c.Dog = NewDogClient(c.config)
 	c.User = NewUserClient(c.config)
 }
@@ -78,7 +78,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:    ctx,
 		config: cfg,
-		Cloud:  NewCloudClient(cfg),
+		Cache:  NewCacheClient(cfg),
 		Dog:    NewDogClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
@@ -100,7 +100,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:    ctx,
 		config: cfg,
-		Cloud:  NewCloudClient(cfg),
+		Cache:  NewCacheClient(cfg),
 		Dog:    NewDogClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
@@ -109,7 +109,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Cloud.
+//		Cache.
 //		Query().
 //		Count(ctx)
 //
@@ -132,89 +132,89 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Cloud.Use(hooks...)
+	c.Cache.Use(hooks...)
 	c.Dog.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
-// CloudClient is a client for the Cloud schema.
-type CloudClient struct {
+// CacheClient is a client for the Cache schema.
+type CacheClient struct {
 	config
 }
 
-// NewCloudClient returns a client for the Cloud from the given config.
-func NewCloudClient(c config) *CloudClient {
-	return &CloudClient{config: c}
+// NewCacheClient returns a client for the Cache from the given config.
+func NewCacheClient(c config) *CacheClient {
+	return &CacheClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `cloud.Hooks(f(g(h())))`.
-func (c *CloudClient) Use(hooks ...Hook) {
-	c.hooks.Cloud = append(c.hooks.Cloud, hooks...)
+// A call to `Use(f, g, h)` equals to `cache.Hooks(f(g(h())))`.
+func (c *CacheClient) Use(hooks ...Hook) {
+	c.hooks.Cache = append(c.hooks.Cache, hooks...)
 }
 
-// Create returns a create builder for Cloud.
-func (c *CloudClient) Create() *CloudCreate {
-	mutation := newCloudMutation(c.config, OpCreate)
-	return &CloudCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Cache.
+func (c *CacheClient) Create() *CacheCreate {
+	mutation := newCacheMutation(c.config, OpCreate)
+	return &CacheCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Cloud entities.
-func (c *CloudClient) CreateBulk(builders ...*CloudCreate) *CloudCreateBulk {
-	return &CloudCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Cache entities.
+func (c *CacheClient) CreateBulk(builders ...*CacheCreate) *CacheCreateBulk {
+	return &CacheCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Cloud.
-func (c *CloudClient) Update() *CloudUpdate {
-	mutation := newCloudMutation(c.config, OpUpdate)
-	return &CloudUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Cache.
+func (c *CacheClient) Update() *CacheUpdate {
+	mutation := newCacheMutation(c.config, OpUpdate)
+	return &CacheUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *CloudClient) UpdateOne(cl *Cloud) *CloudUpdateOne {
-	mutation := newCloudMutation(c.config, OpUpdateOne, withCloud(cl))
-	return &CloudUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *CacheClient) UpdateOne(ca *Cache) *CacheUpdateOne {
+	mutation := newCacheMutation(c.config, OpUpdateOne, withCache(ca))
+	return &CacheUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *CloudClient) UpdateOneID(id int) *CloudUpdateOne {
-	mutation := newCloudMutation(c.config, OpUpdateOne, withCloudID(id))
-	return &CloudUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *CacheClient) UpdateOneID(id int) *CacheUpdateOne {
+	mutation := newCacheMutation(c.config, OpUpdateOne, withCacheID(id))
+	return &CacheUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Cloud.
-func (c *CloudClient) Delete() *CloudDelete {
-	mutation := newCloudMutation(c.config, OpDelete)
-	return &CloudDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Cache.
+func (c *CacheClient) Delete() *CacheDelete {
+	mutation := newCacheMutation(c.config, OpDelete)
+	return &CacheDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *CloudClient) DeleteOne(cl *Cloud) *CloudDeleteOne {
-	return c.DeleteOneID(cl.ID)
+func (c *CacheClient) DeleteOne(ca *Cache) *CacheDeleteOne {
+	return c.DeleteOneID(ca.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *CloudClient) DeleteOneID(id int) *CloudDeleteOne {
-	builder := c.Delete().Where(cloud.ID(id))
+func (c *CacheClient) DeleteOneID(id int) *CacheDeleteOne {
+	builder := c.Delete().Where(cache.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &CloudDeleteOne{builder}
+	return &CacheDeleteOne{builder}
 }
 
-// Query returns a query builder for Cloud.
-func (c *CloudClient) Query() *CloudQuery {
-	return &CloudQuery{
+// Query returns a query builder for Cache.
+func (c *CacheClient) Query() *CacheQuery {
+	return &CacheQuery{
 		config: c.config,
 	}
 }
 
-// Get returns a Cloud entity by its id.
-func (c *CloudClient) Get(ctx context.Context, id int) (*Cloud, error) {
-	return c.Query().Where(cloud.ID(id)).Only(ctx)
+// Get returns a Cache entity by its id.
+func (c *CacheClient) Get(ctx context.Context, id int) (*Cache, error) {
+	return c.Query().Where(cache.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *CloudClient) GetX(ctx context.Context, id int) *Cloud {
+func (c *CacheClient) GetX(ctx context.Context, id int) *Cache {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -223,8 +223,8 @@ func (c *CloudClient) GetX(ctx context.Context, id int) *Cloud {
 }
 
 // Hooks returns the client hooks.
-func (c *CloudClient) Hooks() []Hook {
-	return c.hooks.Cloud
+func (c *CacheClient) Hooks() []Hook {
+	return c.hooks.Cache
 }
 
 // DogClient is a client for the Dog schema.
@@ -435,15 +435,15 @@ func (c *UserClient) QueryPets(u *User) *DogQuery {
 	return query
 }
 
-// QueryCloud queries the cloud edge of a User.
-func (c *UserClient) QueryCloud(u *User) *CloudQuery {
-	query := &CloudQuery{config: c.config}
+// QueryCache queries the cache edge of a User.
+func (c *UserClient) QueryCache(u *User) *CacheQuery {
+	query := &CacheQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := u.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(cloud.Table, cloud.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, false, user.CloudTable, user.CloudColumn),
+			sqlgraph.To(cache.Table, cache.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, user.CacheTable, user.CacheColumn),
 		)
 		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
 		return fromV, nil
@@ -453,6 +453,5 @@ func (c *UserClient) QueryCloud(u *User) *CloudQuery {
 
 // Hooks returns the client hooks.
 func (c *UserClient) Hooks() []Hook {
-	hooks := c.hooks.User
-	return append(hooks[:len(hooks):len(hooks)], user.Hooks[:]...)
+	return c.hooks.User
 }

@@ -13,10 +13,10 @@ import (
 func main() {
 	opts := []entc.Option{
 		entc.Dependency(
-			entc.DependencyName("CloudSyncer"),
+			entc.DependencyName("CacheSyncer"),
 			entc.DependencyTypeInfo(&field.TypeInfo{
 				Ident:   "hook.Syncer",
-				PkgPath: "github.com/yonidavidson/ent-side-effect-hooks-example/hook",
+				PkgPath: "github.com/yonidavidson/ent-hooks-examples/hook",
 			}),
 		),
 	}

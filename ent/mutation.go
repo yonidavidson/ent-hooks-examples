@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/cloud"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/dog"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/predicate"
-	"github.com/yonidavidson/ent-side-effect-hooks-example/ent/user"
+	"github.com/yonidavidson/ent-hooks-examples/ent/cache"
+	"github.com/yonidavidson/ent-hooks-examples/ent/dog"
+	"github.com/yonidavidson/ent-hooks-examples/ent/predicate"
+	"github.com/yonidavidson/ent-hooks-examples/ent/user"
 
 	"entgo.io/ent"
 )
@@ -25,13 +25,13 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeCloud = "Cloud"
+	TypeCache = "Cache"
 	TypeDog   = "Dog"
 	TypeUser  = "User"
 )
 
-// CloudMutation represents an operation that mutates the Cloud nodes in the graph.
-type CloudMutation struct {
+// CacheMutation represents an operation that mutates the Cache nodes in the graph.
+type CacheMutation struct {
 	config
 	op            Op
 	typ           string
@@ -40,21 +40,21 @@ type CloudMutation struct {
 	addwalks      *int
 	clearedFields map[string]struct{}
 	done          bool
-	oldValue      func(context.Context) (*Cloud, error)
-	predicates    []predicate.Cloud
+	oldValue      func(context.Context) (*Cache, error)
+	predicates    []predicate.Cache
 }
 
-var _ ent.Mutation = (*CloudMutation)(nil)
+var _ ent.Mutation = (*CacheMutation)(nil)
 
-// cloudOption allows management of the mutation configuration using functional options.
-type cloudOption func(*CloudMutation)
+// cacheOption allows management of the mutation configuration using functional options.
+type cacheOption func(*CacheMutation)
 
-// newCloudMutation creates new mutation for the Cloud entity.
-func newCloudMutation(c config, op Op, opts ...cloudOption) *CloudMutation {
-	m := &CloudMutation{
+// newCacheMutation creates new mutation for the Cache entity.
+func newCacheMutation(c config, op Op, opts ...cacheOption) *CacheMutation {
+	m := &CacheMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeCloud,
+		typ:           TypeCache,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -63,20 +63,20 @@ func newCloudMutation(c config, op Op, opts ...cloudOption) *CloudMutation {
 	return m
 }
 
-// withCloudID sets the ID field of the mutation.
-func withCloudID(id int) cloudOption {
-	return func(m *CloudMutation) {
+// withCacheID sets the ID field of the mutation.
+func withCacheID(id int) cacheOption {
+	return func(m *CacheMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Cloud
+			value *Cache
 		)
-		m.oldValue = func(ctx context.Context) (*Cloud, error) {
+		m.oldValue = func(ctx context.Context) (*Cache, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Cloud.Get(ctx, id)
+					value, err = m.Client().Cache.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -85,10 +85,10 @@ func withCloudID(id int) cloudOption {
 	}
 }
 
-// withCloud sets the old Cloud of the mutation.
-func withCloud(node *Cloud) cloudOption {
-	return func(m *CloudMutation) {
-		m.oldValue = func(context.Context) (*Cloud, error) {
+// withCache sets the old Cache of the mutation.
+func withCache(node *Cache) cacheOption {
+	return func(m *CacheMutation) {
+		m.oldValue = func(context.Context) (*Cache, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -97,7 +97,7 @@ func withCloud(node *Cloud) cloudOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m CloudMutation) Client() *Client {
+func (m CacheMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -105,7 +105,7 @@ func (m CloudMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m CloudMutation) Tx() (*Tx, error) {
+func (m CacheMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, errors.New("ent: mutation is not running in a transaction")
 	}
@@ -116,7 +116,7 @@ func (m CloudMutation) Tx() (*Tx, error) {
 
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *CloudMutation) ID() (id int, exists bool) {
+func (m *CacheMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -127,7 +127,7 @@ func (m *CloudMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *CloudMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *CacheMutation) IDs(ctx context.Context) ([]int, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
@@ -136,20 +136,20 @@ func (m *CloudMutation) IDs(ctx context.Context) ([]int, error) {
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Cloud.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().Cache.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
 }
 
 // SetWalks sets the "walks" field.
-func (m *CloudMutation) SetWalks(i int) {
+func (m *CacheMutation) SetWalks(i int) {
 	m.walks = &i
 	m.addwalks = nil
 }
 
 // Walks returns the value of the "walks" field in the mutation.
-func (m *CloudMutation) Walks() (r int, exists bool) {
+func (m *CacheMutation) Walks() (r int, exists bool) {
 	v := m.walks
 	if v == nil {
 		return
@@ -157,10 +157,10 @@ func (m *CloudMutation) Walks() (r int, exists bool) {
 	return *v, true
 }
 
-// OldWalks returns the old "walks" field's value of the Cloud entity.
-// If the Cloud object wasn't provided to the builder, the object is fetched from the database.
+// OldWalks returns the old "walks" field's value of the Cache entity.
+// If the Cache object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CloudMutation) OldWalks(ctx context.Context) (v int, err error) {
+func (m *CacheMutation) OldWalks(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldWalks is only allowed on UpdateOne operations")
 	}
@@ -175,7 +175,7 @@ func (m *CloudMutation) OldWalks(ctx context.Context) (v int, err error) {
 }
 
 // AddWalks adds i to the "walks" field.
-func (m *CloudMutation) AddWalks(i int) {
+func (m *CacheMutation) AddWalks(i int) {
 	if m.addwalks != nil {
 		*m.addwalks += i
 	} else {
@@ -184,7 +184,7 @@ func (m *CloudMutation) AddWalks(i int) {
 }
 
 // AddedWalks returns the value that was added to the "walks" field in this mutation.
-func (m *CloudMutation) AddedWalks() (r int, exists bool) {
+func (m *CacheMutation) AddedWalks() (r int, exists bool) {
 	v := m.addwalks
 	if v == nil {
 		return
@@ -193,33 +193,33 @@ func (m *CloudMutation) AddedWalks() (r int, exists bool) {
 }
 
 // ResetWalks resets all changes to the "walks" field.
-func (m *CloudMutation) ResetWalks() {
+func (m *CacheMutation) ResetWalks() {
 	m.walks = nil
 	m.addwalks = nil
 }
 
-// Where appends a list predicates to the CloudMutation builder.
-func (m *CloudMutation) Where(ps ...predicate.Cloud) {
+// Where appends a list predicates to the CacheMutation builder.
+func (m *CacheMutation) Where(ps ...predicate.Cache) {
 	m.predicates = append(m.predicates, ps...)
 }
 
 // Op returns the operation name.
-func (m *CloudMutation) Op() Op {
+func (m *CacheMutation) Op() Op {
 	return m.op
 }
 
-// Type returns the node type of this mutation (Cloud).
-func (m *CloudMutation) Type() string {
+// Type returns the node type of this mutation (Cache).
+func (m *CacheMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *CloudMutation) Fields() []string {
+func (m *CacheMutation) Fields() []string {
 	fields := make([]string, 0, 1)
 	if m.walks != nil {
-		fields = append(fields, cloud.FieldWalks)
+		fields = append(fields, cache.FieldWalks)
 	}
 	return fields
 }
@@ -227,9 +227,9 @@ func (m *CloudMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *CloudMutation) Field(name string) (ent.Value, bool) {
+func (m *CacheMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		return m.Walks()
 	}
 	return nil, false
@@ -238,20 +238,20 @@ func (m *CloudMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *CloudMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *CacheMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		return m.OldWalks(ctx)
 	}
-	return nil, fmt.Errorf("unknown Cloud field %s", name)
+	return nil, fmt.Errorf("unknown Cache field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *CloudMutation) SetField(name string, value ent.Value) error {
+func (m *CacheMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -259,15 +259,15 @@ func (m *CloudMutation) SetField(name string, value ent.Value) error {
 		m.SetWalks(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Cloud field %s", name)
+	return fmt.Errorf("unknown Cache field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *CloudMutation) AddedFields() []string {
+func (m *CacheMutation) AddedFields() []string {
 	var fields []string
 	if m.addwalks != nil {
-		fields = append(fields, cloud.FieldWalks)
+		fields = append(fields, cache.FieldWalks)
 	}
 	return fields
 }
@@ -275,9 +275,9 @@ func (m *CloudMutation) AddedFields() []string {
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *CloudMutation) AddedField(name string) (ent.Value, bool) {
+func (m *CacheMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		return m.AddedWalks()
 	}
 	return nil, false
@@ -286,9 +286,9 @@ func (m *CloudMutation) AddedField(name string) (ent.Value, bool) {
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *CloudMutation) AddField(name string, value ent.Value) error {
+func (m *CacheMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -296,85 +296,85 @@ func (m *CloudMutation) AddField(name string, value ent.Value) error {
 		m.AddWalks(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Cloud numeric field %s", name)
+	return fmt.Errorf("unknown Cache numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *CloudMutation) ClearedFields() []string {
+func (m *CacheMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *CloudMutation) FieldCleared(name string) bool {
+func (m *CacheMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *CloudMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown Cloud nullable field %s", name)
+func (m *CacheMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Cache nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *CloudMutation) ResetField(name string) error {
+func (m *CacheMutation) ResetField(name string) error {
 	switch name {
-	case cloud.FieldWalks:
+	case cache.FieldWalks:
 		m.ResetWalks()
 		return nil
 	}
-	return fmt.Errorf("unknown Cloud field %s", name)
+	return fmt.Errorf("unknown Cache field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *CloudMutation) AddedEdges() []string {
+func (m *CacheMutation) AddedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *CloudMutation) AddedIDs(name string) []ent.Value {
+func (m *CacheMutation) AddedIDs(name string) []ent.Value {
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *CloudMutation) RemovedEdges() []string {
+func (m *CacheMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *CloudMutation) RemovedIDs(name string) []ent.Value {
+func (m *CacheMutation) RemovedIDs(name string) []ent.Value {
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *CloudMutation) ClearedEdges() []string {
+func (m *CacheMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *CloudMutation) EdgeCleared(name string) bool {
+func (m *CacheMutation) EdgeCleared(name string) bool {
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *CloudMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown Cloud unique edge %s", name)
+func (m *CacheMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Cache unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *CloudMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown Cloud edge %s", name)
+func (m *CacheMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Cache edge %s", name)
 }
 
 // DogMutation represents an operation that mutates the Dog nodes in the graph.
@@ -768,8 +768,8 @@ type UserMutation struct {
 	pets          map[int]struct{}
 	removedpets   map[int]struct{}
 	clearedpets   bool
-	cloud         *int
-	clearedcloud  bool
+	cache         *int
+	clearedcache  bool
 	done          bool
 	oldValue      func(context.Context) (*User, error)
 	predicates    []predicate.User
@@ -963,43 +963,43 @@ func (m *UserMutation) ResetPets() {
 	m.removedpets = nil
 }
 
-// SetCloudID sets the "cloud" edge to the Cloud entity by id.
-func (m *UserMutation) SetCloudID(id int) {
-	m.cloud = &id
+// SetCacheID sets the "cache" edge to the Cache entity by id.
+func (m *UserMutation) SetCacheID(id int) {
+	m.cache = &id
 }
 
-// ClearCloud clears the "cloud" edge to the Cloud entity.
-func (m *UserMutation) ClearCloud() {
-	m.clearedcloud = true
+// ClearCache clears the "cache" edge to the Cache entity.
+func (m *UserMutation) ClearCache() {
+	m.clearedcache = true
 }
 
-// CloudCleared reports if the "cloud" edge to the Cloud entity was cleared.
-func (m *UserMutation) CloudCleared() bool {
-	return m.clearedcloud
+// CacheCleared reports if the "cache" edge to the Cache entity was cleared.
+func (m *UserMutation) CacheCleared() bool {
+	return m.clearedcache
 }
 
-// CloudID returns the "cloud" edge ID in the mutation.
-func (m *UserMutation) CloudID() (id int, exists bool) {
-	if m.cloud != nil {
-		return *m.cloud, true
+// CacheID returns the "cache" edge ID in the mutation.
+func (m *UserMutation) CacheID() (id int, exists bool) {
+	if m.cache != nil {
+		return *m.cache, true
 	}
 	return
 }
 
-// CloudIDs returns the "cloud" edge IDs in the mutation.
+// CacheIDs returns the "cache" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// CloudID instead. It exists only for internal usage by the builders.
-func (m *UserMutation) CloudIDs() (ids []int) {
-	if id := m.cloud; id != nil {
+// CacheID instead. It exists only for internal usage by the builders.
+func (m *UserMutation) CacheIDs() (ids []int) {
+	if id := m.cache; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetCloud resets all changes to the "cloud" edge.
-func (m *UserMutation) ResetCloud() {
-	m.cloud = nil
-	m.clearedcloud = false
+// ResetCache resets all changes to the "cache" edge.
+func (m *UserMutation) ResetCache() {
+	m.cache = nil
+	m.clearedcache = false
 }
 
 // Where appends a list predicates to the UserMutation builder.
@@ -1124,8 +1124,8 @@ func (m *UserMutation) AddedEdges() []string {
 	if m.pets != nil {
 		edges = append(edges, user.EdgePets)
 	}
-	if m.cloud != nil {
-		edges = append(edges, user.EdgeCloud)
+	if m.cache != nil {
+		edges = append(edges, user.EdgeCache)
 	}
 	return edges
 }
@@ -1140,8 +1140,8 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
-	case user.EdgeCloud:
-		if id := m.cloud; id != nil {
+	case user.EdgeCache:
+		if id := m.cache; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -1177,8 +1177,8 @@ func (m *UserMutation) ClearedEdges() []string {
 	if m.clearedpets {
 		edges = append(edges, user.EdgePets)
 	}
-	if m.clearedcloud {
-		edges = append(edges, user.EdgeCloud)
+	if m.clearedcache {
+		edges = append(edges, user.EdgeCache)
 	}
 	return edges
 }
@@ -1189,8 +1189,8 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 	switch name {
 	case user.EdgePets:
 		return m.clearedpets
-	case user.EdgeCloud:
-		return m.clearedcloud
+	case user.EdgeCache:
+		return m.clearedcache
 	}
 	return false
 }
@@ -1199,8 +1199,8 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *UserMutation) ClearEdge(name string) error {
 	switch name {
-	case user.EdgeCloud:
-		m.ClearCloud()
+	case user.EdgeCache:
+		m.ClearCache()
 		return nil
 	}
 	return fmt.Errorf("unknown User unique edge %s", name)
@@ -1213,8 +1213,8 @@ func (m *UserMutation) ResetEdge(name string) error {
 	case user.EdgePets:
 		m.ResetPets()
 		return nil
-	case user.EdgeCloud:
-		m.ResetCloud()
+	case user.EdgeCache:
+		m.ResetCache()
 		return nil
 	}
 	return fmt.Errorf("unknown User edge %s", name)
