@@ -23,7 +23,11 @@ func TestCacheHook(t *testing.T) {
 	cs.Start(ctx, c)
 	cl := c.Cache.Create().SetWalks(-1).SaveX(ctx)
 	d := c.Dog.Create().SetName("Karashindo").SaveX(ctx)
-	u := c.User.Create().SetName("Yoni").SetCache(cl).AddPets(d).SaveX(ctx)
+	u := c.User.Create().SetName("Yoni").
+		SetCache(cl).
+		AddPets(d).
+		SetConnectionString("mysql://root:pass@localhost:3306)").
+		SaveX(ctx)
 	c.Dog.UpdateOne(d).SetName("Fortuna").ExecX(ctx)
 	cs.Close()
 	cl = u.QueryCache().OnlyX(ctx)

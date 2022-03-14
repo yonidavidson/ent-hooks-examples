@@ -35,6 +35,18 @@ func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	return uu
 }
 
+// SetConnectionString sets the "connection_string" field.
+func (uu *UserUpdate) SetConnectionString(s string) *UserUpdate {
+	uu.mutation.SetConnectionString(s)
+	return uu
+}
+
+// SetPassword sets the "password" field.
+func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
+	uu.mutation.SetPassword(s)
+	return uu
+}
+
 // AddPetIDs adds the "pets" edge to the Dog entity by IDs.
 func (uu *UserUpdate) AddPetIDs(ids ...int) *UserUpdate {
 	uu.mutation.AddPetIDs(ids...)
@@ -168,6 +180,16 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
+	if v, ok := uu.mutation.ConnectionString(); ok {
+		if err := user.ConnectionStringValidator(v); err != nil {
+			return &ValidationError{Name: "connection_string", err: fmt.Errorf(`ent: validator failed for field "User.connection_string": %w`, err)}
+		}
+	}
+	if v, ok := uu.mutation.Password(); ok {
+		if err := user.PasswordValidator(v); err != nil {
+			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -194,6 +216,20 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uu.mutation.ConnectionString(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldConnectionString,
+		})
+	}
+	if value, ok := uu.mutation.Password(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldPassword,
 		})
 	}
 	if uu.mutation.PetsCleared() {
@@ -307,6 +343,18 @@ type UserUpdateOne struct {
 // SetName sets the "name" field.
 func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
 	uuo.mutation.SetName(s)
+	return uuo
+}
+
+// SetConnectionString sets the "connection_string" field.
+func (uuo *UserUpdateOne) SetConnectionString(s string) *UserUpdateOne {
+	uuo.mutation.SetConnectionString(s)
+	return uuo
+}
+
+// SetPassword sets the "password" field.
+func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
+	uuo.mutation.SetPassword(s)
 	return uuo
 }
 
@@ -450,6 +498,16 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
+	if v, ok := uuo.mutation.ConnectionString(); ok {
+		if err := user.ConnectionStringValidator(v); err != nil {
+			return &ValidationError{Name: "connection_string", err: fmt.Errorf(`ent: validator failed for field "User.connection_string": %w`, err)}
+		}
+	}
+	if v, ok := uuo.mutation.Password(); ok {
+		if err := user.PasswordValidator(v); err != nil {
+			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -493,6 +551,20 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uuo.mutation.ConnectionString(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldConnectionString,
+		})
+	}
+	if value, ok := uuo.mutation.Password(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldPassword,
 		})
 	}
 	if uuo.mutation.PetsCleared() {
