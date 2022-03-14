@@ -23,7 +23,7 @@ var (
 	DogsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "name", Type: field.TypeString},
-		{Name: "user_pets", Type: field.TypeInt, Nullable: true},
+		{Name: "owner_id", Type: field.TypeInt, Nullable: true},
 	}
 	// DogsTable holds the schema information for the "dogs" table.
 	DogsTable = &schema.Table{

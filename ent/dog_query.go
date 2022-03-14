@@ -27,7 +27,6 @@ type DogQuery struct {
 	predicates []predicate.Dog
 	// eager-loading edges.
 	withOwner *UserQuery
-	withFKs   bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -350,18 +349,11 @@ func (dq *DogQuery) prepareQuery(ctx context.Context) error {
 func (dq *DogQuery) sqlAll(ctx context.Context) ([]*Dog, error) {
 	var (
 		nodes       = []*Dog{}
-		withFKs     = dq.withFKs
 		_spec       = dq.querySpec()
 		loadedTypes = [1]bool{
 			dq.withOwner != nil,
 		}
 	)
-	if dq.withOwner != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, dog.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Dog{config: dq.config}
 		nodes = append(nodes, node)
@@ -386,10 +378,7 @@ func (dq *DogQuery) sqlAll(ctx context.Context) ([]*Dog, error) {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Dog)
 		for i := range nodes {
-			if nodes[i].user_pets == nil {
-				continue
-			}
-			fk := *nodes[i].user_pets
+			fk := nodes[i].OwnerID
 			if _, ok := nodeids[fk]; !ok {
 				ids = append(ids, fk)
 			}
@@ -403,7 +392,7 @@ func (dq *DogQuery) sqlAll(ctx context.Context) ([]*Dog, error) {
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_pets" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "owner_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
 				nodes[i].Edges.Owner = n
