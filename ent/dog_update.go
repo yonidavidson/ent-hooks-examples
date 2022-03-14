@@ -34,17 +34,23 @@ func (du *DogUpdate) SetName(s string) *DogUpdate {
 	return du
 }
 
-// SetOwnerID sets the "owner" edge to the User entity by ID.
-func (du *DogUpdate) SetOwnerID(id int) *DogUpdate {
-	du.mutation.SetOwnerID(id)
+// SetOwnerID sets the "owner_id" field.
+func (du *DogUpdate) SetOwnerID(i int) *DogUpdate {
+	du.mutation.SetOwnerID(i)
 	return du
 }
 
-// SetNillableOwnerID sets the "owner" edge to the User entity by ID if the given value is not nil.
-func (du *DogUpdate) SetNillableOwnerID(id *int) *DogUpdate {
-	if id != nil {
-		du = du.SetOwnerID(*id)
+// SetNillableOwnerID sets the "owner_id" field if the given value is not nil.
+func (du *DogUpdate) SetNillableOwnerID(i *int) *DogUpdate {
+	if i != nil {
+		du.SetOwnerID(*i)
 	}
+	return du
+}
+
+// ClearOwnerID clears the value of the "owner_id" field.
+func (du *DogUpdate) ClearOwnerID() *DogUpdate {
+	du.mutation.ClearOwnerID()
 	return du
 }
 
@@ -219,17 +225,23 @@ func (duo *DogUpdateOne) SetName(s string) *DogUpdateOne {
 	return duo
 }
 
-// SetOwnerID sets the "owner" edge to the User entity by ID.
-func (duo *DogUpdateOne) SetOwnerID(id int) *DogUpdateOne {
-	duo.mutation.SetOwnerID(id)
+// SetOwnerID sets the "owner_id" field.
+func (duo *DogUpdateOne) SetOwnerID(i int) *DogUpdateOne {
+	duo.mutation.SetOwnerID(i)
 	return duo
 }
 
-// SetNillableOwnerID sets the "owner" edge to the User entity by ID if the given value is not nil.
-func (duo *DogUpdateOne) SetNillableOwnerID(id *int) *DogUpdateOne {
-	if id != nil {
-		duo = duo.SetOwnerID(*id)
+// SetNillableOwnerID sets the "owner_id" field if the given value is not nil.
+func (duo *DogUpdateOne) SetNillableOwnerID(i *int) *DogUpdateOne {
+	if i != nil {
+		duo.SetOwnerID(*i)
 	}
+	return duo
+}
+
+// ClearOwnerID clears the value of the "owner_id" field.
+func (duo *DogUpdateOne) ClearOwnerID() *DogUpdateOne {
+	duo.mutation.ClearOwnerID()
 	return duo
 }
 

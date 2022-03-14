@@ -526,9 +526,53 @@ func (m *DogMutation) ResetName() {
 	m.name = nil
 }
 
-// SetOwnerID sets the "owner" edge to the User entity by id.
-func (m *DogMutation) SetOwnerID(id int) {
-	m.owner = &id
+// SetOwnerID sets the "owner_id" field.
+func (m *DogMutation) SetOwnerID(i int) {
+	m.owner = &i
+}
+
+// OwnerID returns the value of the "owner_id" field in the mutation.
+func (m *DogMutation) OwnerID() (r int, exists bool) {
+	v := m.owner
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwnerID returns the old "owner_id" field's value of the Dog entity.
+// If the Dog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *DogMutation) OldOwnerID(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwnerID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwnerID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwnerID: %w", err)
+	}
+	return oldValue.OwnerID, nil
+}
+
+// ClearOwnerID clears the value of the "owner_id" field.
+func (m *DogMutation) ClearOwnerID() {
+	m.owner = nil
+	m.clearedFields[dog.FieldOwnerID] = struct{}{}
+}
+
+// OwnerIDCleared returns if the "owner_id" field was cleared in this mutation.
+func (m *DogMutation) OwnerIDCleared() bool {
+	_, ok := m.clearedFields[dog.FieldOwnerID]
+	return ok
+}
+
+// ResetOwnerID resets all changes to the "owner_id" field.
+func (m *DogMutation) ResetOwnerID() {
+	m.owner = nil
+	delete(m.clearedFields, dog.FieldOwnerID)
 }
 
 // ClearOwner clears the "owner" edge to the User entity.
@@ -538,15 +582,7 @@ func (m *DogMutation) ClearOwner() {
 
 // OwnerCleared reports if the "owner" edge to the User entity was cleared.
 func (m *DogMutation) OwnerCleared() bool {
-	return m.clearedowner
-}
-
-// OwnerID returns the "owner" edge ID in the mutation.
-func (m *DogMutation) OwnerID() (id int, exists bool) {
-	if m.owner != nil {
-		return *m.owner, true
-	}
-	return
+	return m.OwnerIDCleared() || m.clearedowner
 }
 
 // OwnerIDs returns the "owner" edge IDs in the mutation.
@@ -584,9 +620,12 @@ func (m *DogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *DogMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 2)
 	if m.name != nil {
 		fields = append(fields, dog.FieldName)
+	}
+	if m.owner != nil {
+		fields = append(fields, dog.FieldOwnerID)
 	}
 	return fields
 }
@@ -598,6 +637,8 @@ func (m *DogMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case dog.FieldName:
 		return m.Name()
+	case dog.FieldOwnerID:
+		return m.OwnerID()
 	}
 	return nil, false
 }
@@ -609,6 +650,8 @@ func (m *DogMutation) OldField(ctx context.Context, name string) (ent.Value, err
 	switch name {
 	case dog.FieldName:
 		return m.OldName(ctx)
+	case dog.FieldOwnerID:
+		return m.OldOwnerID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Dog field %s", name)
 }
@@ -625,6 +668,13 @@ func (m *DogMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
+	case dog.FieldOwnerID:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOwnerID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Dog field %s", name)
 }
@@ -632,13 +682,16 @@ func (m *DogMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *DogMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *DogMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	}
 	return nil, false
 }
 
@@ -654,7 +707,11 @@ func (m *DogMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *DogMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(dog.FieldOwnerID) {
+		fields = append(fields, dog.FieldOwnerID)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -667,6 +724,11 @@ func (m *DogMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *DogMutation) ClearField(name string) error {
+	switch name {
+	case dog.FieldOwnerID:
+		m.ClearOwnerID()
+		return nil
+	}
 	return fmt.Errorf("unknown Dog nullable field %s", name)
 }
 
@@ -676,6 +738,9 @@ func (m *DogMutation) ResetField(name string) error {
 	switch name {
 	case dog.FieldName:
 		m.ResetName()
+		return nil
+	case dog.FieldOwnerID:
+		m.ResetOwnerID()
 		return nil
 	}
 	return fmt.Errorf("unknown Dog field %s", name)

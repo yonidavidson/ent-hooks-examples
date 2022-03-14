@@ -29,7 +29,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "dog" package.
 	PetsInverseTable = "dogs"
 	// PetsColumn is the table column denoting the pets relation/edge.
-	PetsColumn = "user_pets"
+	PetsColumn = "owner_id"
 	// CacheTable is the table that holds the cache relation/edge.
 	CacheTable = "users"
 	// CacheInverseTable is the table name for the Cache entity.

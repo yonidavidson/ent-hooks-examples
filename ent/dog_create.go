@@ -26,16 +26,16 @@ func (dc *DogCreate) SetName(s string) *DogCreate {
 	return dc
 }
 
-// SetOwnerID sets the "owner" edge to the User entity by ID.
-func (dc *DogCreate) SetOwnerID(id int) *DogCreate {
-	dc.mutation.SetOwnerID(id)
+// SetOwnerID sets the "owner_id" field.
+func (dc *DogCreate) SetOwnerID(i int) *DogCreate {
+	dc.mutation.SetOwnerID(i)
 	return dc
 }
 
-// SetNillableOwnerID sets the "owner" edge to the User entity by ID if the given value is not nil.
-func (dc *DogCreate) SetNillableOwnerID(id *int) *DogCreate {
-	if id != nil {
-		dc = dc.SetOwnerID(*id)
+// SetNillableOwnerID sets the "owner_id" field if the given value is not nil.
+func (dc *DogCreate) SetNillableOwnerID(i *int) *DogCreate {
+	if i != nil {
+		dc.SetOwnerID(*i)
 	}
 	return dc
 }
@@ -175,7 +175,7 @@ func (dc *DogCreate) createSpec() (*Dog, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.user_pets = &nodes[0]
+		_node.OwnerID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

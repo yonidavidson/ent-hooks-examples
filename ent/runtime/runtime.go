@@ -14,6 +14,7 @@ import (
 func init() {
 	dogHooks := schema.Dog{}.Hooks()
 	dog.Hooks[0] = dogHooks[0]
+	dog.Hooks[1] = dogHooks[1]
 	dogFields := schema.Dog{}.Fields()
 	_ = dogFields
 	// dogDescName is the schema descriptor for name field.

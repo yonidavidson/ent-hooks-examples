@@ -33,3 +33,15 @@ func TestCacheHook(t *testing.T) {
 	cl = u.QueryCache().OnlyX(ctx)
 	require.True(t, cl.Walks > 0)
 }
+
+func TestDogNameValidationHook(t *testing.T) {
+	ctx := context.Background()
+	c := enttest.Open(t, dialect.SQLite,
+		"file:TestSchemaConfHooks?mode=memory&cache=shared&_fk=1",
+	)
+	u := c.User.Create().SetName("Yoni").
+		SetConnectionString("mysql://root:pass@localhost:3306)").
+		SaveX(ctx)
+	_, err := c.Dog.Create().SetName("Yolo").SetOwner(u).Save(ctx)
+	require.Error(t, err)
+}

@@ -428,7 +428,6 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 			nodeids[nodes[i].ID] = nodes[i]
 			nodes[i].Edges.Pets = []*Dog{}
 		}
-		query.withFKs = true
 		query.Where(predicate.Dog(func(s *sql.Selector) {
 			s.Where(sql.InValues(user.PetsColumn, fks...))
 		}))
@@ -437,13 +436,10 @@ func (uq *UserQuery) sqlAll(ctx context.Context) ([]*User, error) {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.user_pets
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "user_pets" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
+			fk := n.OwnerID
+			node, ok := nodeids[fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_pets" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "owner_id" returned %v for node %v`, fk, n.ID)
 			}
 			node.Edges.Pets = append(node.Edges.Pets, n)
 		}
