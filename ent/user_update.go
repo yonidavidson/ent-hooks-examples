@@ -35,15 +35,15 @@ func (uu *UserUpdate) SetName(s string) *UserUpdate {
 	return uu
 }
 
-// SetConnectionString sets the "connection_string" field.
-func (uu *UserUpdate) SetConnectionString(s string) *UserUpdate {
-	uu.mutation.SetConnectionString(s)
+// SetPhoneNumber sets the "phone_number" field.
+func (uu *UserUpdate) SetPhoneNumber(s string) *UserUpdate {
+	uu.mutation.SetPhoneNumber(s)
 	return uu
 }
 
-// SetPassword sets the "password" field.
-func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
-	uu.mutation.SetPassword(s)
+// SetLastDigits sets the "last_digits" field.
+func (uu *UserUpdate) SetLastDigits(s string) *UserUpdate {
+	uu.mutation.SetLastDigits(s)
 	return uu
 }
 
@@ -180,14 +180,14 @@ func (uu *UserUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.ConnectionString(); ok {
-		if err := user.ConnectionStringValidator(v); err != nil {
-			return &ValidationError{Name: "connection_string", err: fmt.Errorf(`ent: validator failed for field "User.connection_string": %w`, err)}
+	if v, ok := uu.mutation.PhoneNumber(); ok {
+		if err := user.PhoneNumberValidator(v); err != nil {
+			return &ValidationError{Name: "phone_number", err: fmt.Errorf(`ent: validator failed for field "User.phone_number": %w`, err)}
 		}
 	}
-	if v, ok := uu.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
+	if v, ok := uu.mutation.LastDigits(); ok {
+		if err := user.LastDigitsValidator(v); err != nil {
+			return &ValidationError{Name: "last_digits", err: fmt.Errorf(`ent: validator failed for field "User.last_digits": %w`, err)}
 		}
 	}
 	return nil
@@ -218,18 +218,18 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldName,
 		})
 	}
-	if value, ok := uu.mutation.ConnectionString(); ok {
+	if value, ok := uu.mutation.PhoneNumber(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldConnectionString,
+			Column: user.FieldPhoneNumber,
 		})
 	}
-	if value, ok := uu.mutation.Password(); ok {
+	if value, ok := uu.mutation.LastDigits(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldPassword,
+			Column: user.FieldLastDigits,
 		})
 	}
 	if uu.mutation.PetsCleared() {
@@ -346,15 +346,15 @@ func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
 	return uuo
 }
 
-// SetConnectionString sets the "connection_string" field.
-func (uuo *UserUpdateOne) SetConnectionString(s string) *UserUpdateOne {
-	uuo.mutation.SetConnectionString(s)
+// SetPhoneNumber sets the "phone_number" field.
+func (uuo *UserUpdateOne) SetPhoneNumber(s string) *UserUpdateOne {
+	uuo.mutation.SetPhoneNumber(s)
 	return uuo
 }
 
-// SetPassword sets the "password" field.
-func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
-	uuo.mutation.SetPassword(s)
+// SetLastDigits sets the "last_digits" field.
+func (uuo *UserUpdateOne) SetLastDigits(s string) *UserUpdateOne {
+	uuo.mutation.SetLastDigits(s)
 	return uuo
 }
 
@@ -498,14 +498,14 @@ func (uuo *UserUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
-	if v, ok := uuo.mutation.ConnectionString(); ok {
-		if err := user.ConnectionStringValidator(v); err != nil {
-			return &ValidationError{Name: "connection_string", err: fmt.Errorf(`ent: validator failed for field "User.connection_string": %w`, err)}
+	if v, ok := uuo.mutation.PhoneNumber(); ok {
+		if err := user.PhoneNumberValidator(v); err != nil {
+			return &ValidationError{Name: "phone_number", err: fmt.Errorf(`ent: validator failed for field "User.phone_number": %w`, err)}
 		}
 	}
-	if v, ok := uuo.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
+	if v, ok := uuo.mutation.LastDigits(); ok {
+		if err := user.LastDigitsValidator(v); err != nil {
+			return &ValidationError{Name: "last_digits", err: fmt.Errorf(`ent: validator failed for field "User.last_digits": %w`, err)}
 		}
 	}
 	return nil
@@ -553,18 +553,18 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldName,
 		})
 	}
-	if value, ok := uuo.mutation.ConnectionString(); ok {
+	if value, ok := uuo.mutation.PhoneNumber(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldConnectionString,
+			Column: user.FieldPhoneNumber,
 		})
 	}
-	if value, ok := uuo.mutation.Password(); ok {
+	if value, ok := uuo.mutation.LastDigits(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldPassword,
+			Column: user.FieldLastDigits,
 		})
 	}
 	if uuo.mutation.PetsCleared() {

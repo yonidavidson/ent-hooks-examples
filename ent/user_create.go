@@ -27,15 +27,15 @@ func (uc *UserCreate) SetName(s string) *UserCreate {
 	return uc
 }
 
-// SetConnectionString sets the "connection_string" field.
-func (uc *UserCreate) SetConnectionString(s string) *UserCreate {
-	uc.mutation.SetConnectionString(s)
+// SetPhoneNumber sets the "phone_number" field.
+func (uc *UserCreate) SetPhoneNumber(s string) *UserCreate {
+	uc.mutation.SetPhoneNumber(s)
 	return uc
 }
 
-// SetPassword sets the "password" field.
-func (uc *UserCreate) SetPassword(s string) *UserCreate {
-	uc.mutation.SetPassword(s)
+// SetLastDigits sets the "last_digits" field.
+func (uc *UserCreate) SetLastDigits(s string) *UserCreate {
+	uc.mutation.SetLastDigits(s)
 	return uc
 }
 
@@ -151,20 +151,20 @@ func (uc *UserCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "User.name": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.ConnectionString(); !ok {
-		return &ValidationError{Name: "connection_string", err: errors.New(`ent: missing required field "User.connection_string"`)}
+	if _, ok := uc.mutation.PhoneNumber(); !ok {
+		return &ValidationError{Name: "phone_number", err: errors.New(`ent: missing required field "User.phone_number"`)}
 	}
-	if v, ok := uc.mutation.ConnectionString(); ok {
-		if err := user.ConnectionStringValidator(v); err != nil {
-			return &ValidationError{Name: "connection_string", err: fmt.Errorf(`ent: validator failed for field "User.connection_string": %w`, err)}
+	if v, ok := uc.mutation.PhoneNumber(); ok {
+		if err := user.PhoneNumberValidator(v); err != nil {
+			return &ValidationError{Name: "phone_number", err: fmt.Errorf(`ent: validator failed for field "User.phone_number": %w`, err)}
 		}
 	}
-	if _, ok := uc.mutation.Password(); !ok {
-		return &ValidationError{Name: "password", err: errors.New(`ent: missing required field "User.password"`)}
+	if _, ok := uc.mutation.LastDigits(); !ok {
+		return &ValidationError{Name: "last_digits", err: errors.New(`ent: missing required field "User.last_digits"`)}
 	}
-	if v, ok := uc.mutation.Password(); ok {
-		if err := user.PasswordValidator(v); err != nil {
-			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "User.password": %w`, err)}
+	if v, ok := uc.mutation.LastDigits(); ok {
+		if err := user.LastDigitsValidator(v); err != nil {
+			return &ValidationError{Name: "last_digits", err: fmt.Errorf(`ent: validator failed for field "User.last_digits": %w`, err)}
 		}
 	}
 	return nil
@@ -202,21 +202,21 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		})
 		_node.Name = value
 	}
-	if value, ok := uc.mutation.ConnectionString(); ok {
+	if value, ok := uc.mutation.PhoneNumber(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldConnectionString,
+			Column: user.FieldPhoneNumber,
 		})
-		_node.ConnectionString = value
+		_node.PhoneNumber = value
 	}
-	if value, ok := uc.mutation.Password(); ok {
+	if value, ok := uc.mutation.LastDigits(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: user.FieldPassword,
+			Column: user.FieldLastDigits,
 		})
-		_node.Password = value
+		_node.LastDigits = value
 	}
 	if nodes := uc.mutation.PetsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

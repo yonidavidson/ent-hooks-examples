@@ -98,17 +98,17 @@ func Name(v string) predicate.User {
 	})
 }
 
-// ConnectionString applies equality check predicate on the "connection_string" field. It's identical to ConnectionStringEQ.
-func ConnectionString(v string) predicate.User {
+// PhoneNumber applies equality check predicate on the "phone_number" field. It's identical to PhoneNumberEQ.
+func PhoneNumber(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldConnectionString), v))
+		s.Where(sql.EQ(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// Password applies equality check predicate on the "password" field. It's identical to PasswordEQ.
-func Password(v string) predicate.User {
+// LastDigits applies equality check predicate on the "last_digits" field. It's identical to LastDigitsEQ.
+func LastDigits(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPassword), v))
+		s.Where(sql.EQ(s.C(FieldLastDigits), v))
 	})
 }
 
@@ -223,22 +223,22 @@ func NameContainsFold(v string) predicate.User {
 	})
 }
 
-// ConnectionStringEQ applies the EQ predicate on the "connection_string" field.
-func ConnectionStringEQ(v string) predicate.User {
+// PhoneNumberEQ applies the EQ predicate on the "phone_number" field.
+func PhoneNumberEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldConnectionString), v))
+		s.Where(sql.EQ(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringNEQ applies the NEQ predicate on the "connection_string" field.
-func ConnectionStringNEQ(v string) predicate.User {
+// PhoneNumberNEQ applies the NEQ predicate on the "phone_number" field.
+func PhoneNumberNEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldConnectionString), v))
+		s.Where(sql.NEQ(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringIn applies the In predicate on the "connection_string" field.
-func ConnectionStringIn(vs ...string) predicate.User {
+// PhoneNumberIn applies the In predicate on the "phone_number" field.
+func PhoneNumberIn(vs ...string) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -250,12 +250,12 @@ func ConnectionStringIn(vs ...string) predicate.User {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldConnectionString), v...))
+		s.Where(sql.In(s.C(FieldPhoneNumber), v...))
 	})
 }
 
-// ConnectionStringNotIn applies the NotIn predicate on the "connection_string" field.
-func ConnectionStringNotIn(vs ...string) predicate.User {
+// PhoneNumberNotIn applies the NotIn predicate on the "phone_number" field.
+func PhoneNumberNotIn(vs ...string) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -267,89 +267,89 @@ func ConnectionStringNotIn(vs ...string) predicate.User {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldConnectionString), v...))
+		s.Where(sql.NotIn(s.C(FieldPhoneNumber), v...))
 	})
 }
 
-// ConnectionStringGT applies the GT predicate on the "connection_string" field.
-func ConnectionStringGT(v string) predicate.User {
+// PhoneNumberGT applies the GT predicate on the "phone_number" field.
+func PhoneNumberGT(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldConnectionString), v))
+		s.Where(sql.GT(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringGTE applies the GTE predicate on the "connection_string" field.
-func ConnectionStringGTE(v string) predicate.User {
+// PhoneNumberGTE applies the GTE predicate on the "phone_number" field.
+func PhoneNumberGTE(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldConnectionString), v))
+		s.Where(sql.GTE(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringLT applies the LT predicate on the "connection_string" field.
-func ConnectionStringLT(v string) predicate.User {
+// PhoneNumberLT applies the LT predicate on the "phone_number" field.
+func PhoneNumberLT(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldConnectionString), v))
+		s.Where(sql.LT(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringLTE applies the LTE predicate on the "connection_string" field.
-func ConnectionStringLTE(v string) predicate.User {
+// PhoneNumberLTE applies the LTE predicate on the "phone_number" field.
+func PhoneNumberLTE(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldConnectionString), v))
+		s.Where(sql.LTE(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringContains applies the Contains predicate on the "connection_string" field.
-func ConnectionStringContains(v string) predicate.User {
+// PhoneNumberContains applies the Contains predicate on the "phone_number" field.
+func PhoneNumberContains(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldConnectionString), v))
+		s.Where(sql.Contains(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringHasPrefix applies the HasPrefix predicate on the "connection_string" field.
-func ConnectionStringHasPrefix(v string) predicate.User {
+// PhoneNumberHasPrefix applies the HasPrefix predicate on the "phone_number" field.
+func PhoneNumberHasPrefix(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldConnectionString), v))
+		s.Where(sql.HasPrefix(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringHasSuffix applies the HasSuffix predicate on the "connection_string" field.
-func ConnectionStringHasSuffix(v string) predicate.User {
+// PhoneNumberHasSuffix applies the HasSuffix predicate on the "phone_number" field.
+func PhoneNumberHasSuffix(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldConnectionString), v))
+		s.Where(sql.HasSuffix(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringEqualFold applies the EqualFold predicate on the "connection_string" field.
-func ConnectionStringEqualFold(v string) predicate.User {
+// PhoneNumberEqualFold applies the EqualFold predicate on the "phone_number" field.
+func PhoneNumberEqualFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldConnectionString), v))
+		s.Where(sql.EqualFold(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// ConnectionStringContainsFold applies the ContainsFold predicate on the "connection_string" field.
-func ConnectionStringContainsFold(v string) predicate.User {
+// PhoneNumberContainsFold applies the ContainsFold predicate on the "phone_number" field.
+func PhoneNumberContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldConnectionString), v))
+		s.Where(sql.ContainsFold(s.C(FieldPhoneNumber), v))
 	})
 }
 
-// PasswordEQ applies the EQ predicate on the "password" field.
-func PasswordEQ(v string) predicate.User {
+// LastDigitsEQ applies the EQ predicate on the "last_digits" field.
+func LastDigitsEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPassword), v))
+		s.Where(sql.EQ(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordNEQ applies the NEQ predicate on the "password" field.
-func PasswordNEQ(v string) predicate.User {
+// LastDigitsNEQ applies the NEQ predicate on the "last_digits" field.
+func LastDigitsNEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldPassword), v))
+		s.Where(sql.NEQ(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordIn applies the In predicate on the "password" field.
-func PasswordIn(vs ...string) predicate.User {
+// LastDigitsIn applies the In predicate on the "last_digits" field.
+func LastDigitsIn(vs ...string) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -361,12 +361,12 @@ func PasswordIn(vs ...string) predicate.User {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldPassword), v...))
+		s.Where(sql.In(s.C(FieldLastDigits), v...))
 	})
 }
 
-// PasswordNotIn applies the NotIn predicate on the "password" field.
-func PasswordNotIn(vs ...string) predicate.User {
+// LastDigitsNotIn applies the NotIn predicate on the "last_digits" field.
+func LastDigitsNotIn(vs ...string) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -378,70 +378,70 @@ func PasswordNotIn(vs ...string) predicate.User {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldPassword), v...))
+		s.Where(sql.NotIn(s.C(FieldLastDigits), v...))
 	})
 }
 
-// PasswordGT applies the GT predicate on the "password" field.
-func PasswordGT(v string) predicate.User {
+// LastDigitsGT applies the GT predicate on the "last_digits" field.
+func LastDigitsGT(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldPassword), v))
+		s.Where(sql.GT(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordGTE applies the GTE predicate on the "password" field.
-func PasswordGTE(v string) predicate.User {
+// LastDigitsGTE applies the GTE predicate on the "last_digits" field.
+func LastDigitsGTE(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldPassword), v))
+		s.Where(sql.GTE(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordLT applies the LT predicate on the "password" field.
-func PasswordLT(v string) predicate.User {
+// LastDigitsLT applies the LT predicate on the "last_digits" field.
+func LastDigitsLT(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldPassword), v))
+		s.Where(sql.LT(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordLTE applies the LTE predicate on the "password" field.
-func PasswordLTE(v string) predicate.User {
+// LastDigitsLTE applies the LTE predicate on the "last_digits" field.
+func LastDigitsLTE(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldPassword), v))
+		s.Where(sql.LTE(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordContains applies the Contains predicate on the "password" field.
-func PasswordContains(v string) predicate.User {
+// LastDigitsContains applies the Contains predicate on the "last_digits" field.
+func LastDigitsContains(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldPassword), v))
+		s.Where(sql.Contains(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordHasPrefix applies the HasPrefix predicate on the "password" field.
-func PasswordHasPrefix(v string) predicate.User {
+// LastDigitsHasPrefix applies the HasPrefix predicate on the "last_digits" field.
+func LastDigitsHasPrefix(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldPassword), v))
+		s.Where(sql.HasPrefix(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordHasSuffix applies the HasSuffix predicate on the "password" field.
-func PasswordHasSuffix(v string) predicate.User {
+// LastDigitsHasSuffix applies the HasSuffix predicate on the "last_digits" field.
+func LastDigitsHasSuffix(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldPassword), v))
+		s.Where(sql.HasSuffix(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordEqualFold applies the EqualFold predicate on the "password" field.
-func PasswordEqualFold(v string) predicate.User {
+// LastDigitsEqualFold applies the EqualFold predicate on the "last_digits" field.
+func LastDigitsEqualFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldPassword), v))
+		s.Where(sql.EqualFold(s.C(FieldLastDigits), v))
 	})
 }
 
-// PasswordContainsFold applies the ContainsFold predicate on the "password" field.
-func PasswordContainsFold(v string) predicate.User {
+// LastDigitsContainsFold applies the ContainsFold predicate on the "last_digits" field.
+func LastDigitsContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldPassword), v))
+		s.Where(sql.ContainsFold(s.C(FieldLastDigits), v))
 	})
 }
 

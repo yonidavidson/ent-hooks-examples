@@ -23,9 +23,9 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
 			NotEmpty(),
-		field.String("connection_string").
+		field.String("phone_number").
 			NotEmpty(),
-		field.String("password").
+		field.String("last_digits").
 			Sensitive().
 			NotEmpty(),
 	}
@@ -42,29 +42,25 @@ func (User) Edges() []ent.Edge {
 // Hooks of the User.
 func (User) Hooks() []ent.Hook {
 	return []ent.Hook{
-		hook.If(clearConnectionString,
-			hook.And(hook.Or(hook.HasOp(ent.OpUpdateOne), hook.HasOp(ent.OpCreate)), hook.HasFields(user.FieldConnectionString)),
+		hook.If(maskPhoneNumber,
+			hook.And(hook.Or(hook.HasOp(ent.OpUpdateOne), hook.HasOp(ent.OpCreate)), hook.HasFields(user.FieldPhoneNumber)),
 		),
 	}
 }
 
-func clearConnectionString(next ent.Mutator) ent.Mutator {
+func maskPhoneNumber(next ent.Mutator) ent.Mutator {
 	return hook.UserFunc(func(ctx context.Context, m *gen.UserMutation) (ent.Value, error) {
-		cs, ok := m.ConnectionString()
+		cs, ok := m.PhoneNumber()
 		if !ok {
 			return next.Mutate(ctx, m)
 		}
-		sp := strings.Split(cs, "@")
-		if len(sp) != 2 {
-			return next.Mutate(ctx, m)
-		}
-		sp = strings.Split(sp[0], ":")
+		sp := strings.Split(cs, "-")
 		if len(sp) != 3 {
 			return next.Mutate(ctx, m)
 		}
-		pass := sp[2]
-		m.SetPassword(pass)
-		m.SetConnectionString(strings.ReplaceAll(cs, pass, "****"))
+		m.SetLastDigits(sp[2])
+		sp[2] = "****"
+		m.SetPhoneNumber(strings.Join(sp[0:3], "-"))
 		return next.Mutate(ctx, m)
 	})
 }
