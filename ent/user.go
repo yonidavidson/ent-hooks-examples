@@ -18,10 +18,10 @@ type User struct {
 	ID int `json:"id,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
-	// ConnectionString holds the value of the "connection_string" field.
-	ConnectionString string `json:"connection_string,omitempty"`
-	// Password holds the value of the "password" field.
-	Password string `json:"-"`
+	// PhoneNumber holds the value of the "phone_number" field.
+	PhoneNumber string `json:"phone_number,omitempty"`
+	// LastDigits holds the value of the "last_digits" field.
+	LastDigits string `json:"-"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges      UserEdges `json:"edges"`
@@ -69,7 +69,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case user.FieldID:
 			values[i] = new(sql.NullInt64)
-		case user.FieldName, user.FieldConnectionString, user.FieldPassword:
+		case user.FieldName, user.FieldPhoneNumber, user.FieldLastDigits:
 			values[i] = new(sql.NullString)
 		case user.ForeignKeys[0]: // user_cache
 			values[i] = new(sql.NullInt64)
@@ -100,17 +100,17 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.Name = value.String
 			}
-		case user.FieldConnectionString:
+		case user.FieldPhoneNumber:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field connection_string", values[i])
+				return fmt.Errorf("unexpected type %T for field phone_number", values[i])
 			} else if value.Valid {
-				u.ConnectionString = value.String
+				u.PhoneNumber = value.String
 			}
-		case user.FieldPassword:
+		case user.FieldLastDigits:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field password", values[i])
+				return fmt.Errorf("unexpected type %T for field last_digits", values[i])
 			} else if value.Valid {
-				u.Password = value.String
+				u.LastDigits = value.String
 			}
 		case user.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -159,9 +159,9 @@ func (u *User) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", u.ID))
 	builder.WriteString(", name=")
 	builder.WriteString(u.Name)
-	builder.WriteString(", connection_string=")
-	builder.WriteString(u.ConnectionString)
-	builder.WriteString(", password=<sensitive>")
+	builder.WriteString(", phone_number=")
+	builder.WriteString(u.PhoneNumber)
+	builder.WriteString(", last_digits=<sensitive>")
 	builder.WriteByte(')')
 	return builder.String()
 }

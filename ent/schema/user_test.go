@@ -11,11 +11,11 @@ import (
 	"github.com/yonidavidson/ent-hooks-examples/ent/enttest"
 )
 
-func TestUserConnectionStringHook(t *testing.T) {
+func TestUserPhoneNumberHook(t *testing.T) {
 	ctx := context.Background()
 	c := enttest.Open(t, dialect.SQLite, "file:TestSchemaConfHooks?mode=memory&cache=shared&_fk=1")
-	u := c.User.Create().SetName("Yoni").SetConnectionString("mysql://root:pass@localhost:3306)").SaveX(ctx)
-	require.Equal(t, "mysql://root:****@localhost:3306)", u.ConnectionString)
-	require.Equal(t, "pass", u.Password)
-	require.Equal(t, "mysql://root:pass@localhost:3306)", u.FullConnectionString())
+	u := c.User.Create().SetName("Yoni").SetPhoneNumber("315-194-6020").SaveX(ctx)
+	require.Equal(t, "315-194-****", u.PhoneNumber)
+	require.Equal(t, "6020", u.LastDigits)
+	require.Equal(t, "315-194-6020", u.FullPhoneNumber())
 }

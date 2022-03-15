@@ -42,10 +42,12 @@ func (Dog) Edges() []ent.Edge {
 // Hooks of the Dog.
 func (Dog) Hooks() []ent.Hook {
 	return []ent.Hook{
-		hook.If(syncCache,
+		hook.If(
+			syncCache,
 			hook.HasOp(ent.OpUpdateOne),
 		),
-		hook.If(validateName,
+		hook.If(
+			validateName,
 			hook.HasFields(dog.FieldOwnerID),
 		),
 	}

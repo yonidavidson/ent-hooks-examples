@@ -13,10 +13,10 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldConnectionString holds the string denoting the connection_string field in the database.
-	FieldConnectionString = "connection_string"
-	// FieldPassword holds the string denoting the password field in the database.
-	FieldPassword = "password"
+	// FieldPhoneNumber holds the string denoting the phone_number field in the database.
+	FieldPhoneNumber = "phone_number"
+	// FieldLastDigits holds the string denoting the last_digits field in the database.
+	FieldLastDigits = "last_digits"
 	// EdgePets holds the string denoting the pets edge name in mutations.
 	EdgePets = "pets"
 	// EdgeCache holds the string denoting the cache edge name in mutations.
@@ -43,8 +43,8 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldName,
-	FieldConnectionString,
-	FieldPassword,
+	FieldPhoneNumber,
+	FieldLastDigits,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "users"
@@ -78,8 +78,8 @@ var (
 	Hooks [1]ent.Hook
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// ConnectionStringValidator is a validator for the "connection_string" field. It is called by the builders before save.
-	ConnectionStringValidator func(string) error
-	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
-	PasswordValidator func(string) error
+	// PhoneNumberValidator is a validator for the "phone_number" field. It is called by the builders before save.
+	PhoneNumberValidator func(string) error
+	// LastDigitsValidator is a validator for the "last_digits" field. It is called by the builders before save.
+	LastDigitsValidator func(string) error
 )

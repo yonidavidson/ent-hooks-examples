@@ -825,21 +825,21 @@ func (m *DogMutation) ResetEdge(name string) error {
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	name              *string
-	connection_string *string
-	password          *string
-	clearedFields     map[string]struct{}
-	pets              map[int]struct{}
-	removedpets       map[int]struct{}
-	clearedpets       bool
-	cache             *int
-	clearedcache      bool
-	done              bool
-	oldValue          func(context.Context) (*User, error)
-	predicates        []predicate.User
+	op            Op
+	typ           string
+	id            *int
+	name          *string
+	phone_number  *string
+	last_digits   *string
+	clearedFields map[string]struct{}
+	pets          map[int]struct{}
+	removedpets   map[int]struct{}
+	clearedpets   bool
+	cache         *int
+	clearedcache  bool
+	done          bool
+	oldValue      func(context.Context) (*User, error)
+	predicates    []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -976,76 +976,76 @@ func (m *UserMutation) ResetName() {
 	m.name = nil
 }
 
-// SetConnectionString sets the "connection_string" field.
-func (m *UserMutation) SetConnectionString(s string) {
-	m.connection_string = &s
+// SetPhoneNumber sets the "phone_number" field.
+func (m *UserMutation) SetPhoneNumber(s string) {
+	m.phone_number = &s
 }
 
-// ConnectionString returns the value of the "connection_string" field in the mutation.
-func (m *UserMutation) ConnectionString() (r string, exists bool) {
-	v := m.connection_string
+// PhoneNumber returns the value of the "phone_number" field in the mutation.
+func (m *UserMutation) PhoneNumber() (r string, exists bool) {
+	v := m.phone_number
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldConnectionString returns the old "connection_string" field's value of the User entity.
+// OldPhoneNumber returns the old "phone_number" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldConnectionString(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldPhoneNumber(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldConnectionString is only allowed on UpdateOne operations")
+		return v, errors.New("OldPhoneNumber is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldConnectionString requires an ID field in the mutation")
+		return v, errors.New("OldPhoneNumber requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldConnectionString: %w", err)
+		return v, fmt.Errorf("querying old value for OldPhoneNumber: %w", err)
 	}
-	return oldValue.ConnectionString, nil
+	return oldValue.PhoneNumber, nil
 }
 
-// ResetConnectionString resets all changes to the "connection_string" field.
-func (m *UserMutation) ResetConnectionString() {
-	m.connection_string = nil
+// ResetPhoneNumber resets all changes to the "phone_number" field.
+func (m *UserMutation) ResetPhoneNumber() {
+	m.phone_number = nil
 }
 
-// SetPassword sets the "password" field.
-func (m *UserMutation) SetPassword(s string) {
-	m.password = &s
+// SetLastDigits sets the "last_digits" field.
+func (m *UserMutation) SetLastDigits(s string) {
+	m.last_digits = &s
 }
 
-// Password returns the value of the "password" field in the mutation.
-func (m *UserMutation) Password() (r string, exists bool) {
-	v := m.password
+// LastDigits returns the value of the "last_digits" field in the mutation.
+func (m *UserMutation) LastDigits() (r string, exists bool) {
+	v := m.last_digits
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPassword returns the old "password" field's value of the User entity.
+// OldLastDigits returns the old "last_digits" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldPassword(ctx context.Context) (v string, err error) {
+func (m *UserMutation) OldLastDigits(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
+		return v, errors.New("OldLastDigits is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPassword requires an ID field in the mutation")
+		return v, errors.New("OldLastDigits requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
+		return v, fmt.Errorf("querying old value for OldLastDigits: %w", err)
 	}
-	return oldValue.Password, nil
+	return oldValue.LastDigits, nil
 }
 
-// ResetPassword resets all changes to the "password" field.
-func (m *UserMutation) ResetPassword() {
-	m.password = nil
+// ResetLastDigits resets all changes to the "last_digits" field.
+func (m *UserMutation) ResetLastDigits() {
+	m.last_digits = nil
 }
 
 // AddPetIDs adds the "pets" edge to the Dog entity by ids.
@@ -1164,11 +1164,11 @@ func (m *UserMutation) Fields() []string {
 	if m.name != nil {
 		fields = append(fields, user.FieldName)
 	}
-	if m.connection_string != nil {
-		fields = append(fields, user.FieldConnectionString)
+	if m.phone_number != nil {
+		fields = append(fields, user.FieldPhoneNumber)
 	}
-	if m.password != nil {
-		fields = append(fields, user.FieldPassword)
+	if m.last_digits != nil {
+		fields = append(fields, user.FieldLastDigits)
 	}
 	return fields
 }
@@ -1180,10 +1180,10 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case user.FieldName:
 		return m.Name()
-	case user.FieldConnectionString:
-		return m.ConnectionString()
-	case user.FieldPassword:
-		return m.Password()
+	case user.FieldPhoneNumber:
+		return m.PhoneNumber()
+	case user.FieldLastDigits:
+		return m.LastDigits()
 	}
 	return nil, false
 }
@@ -1195,10 +1195,10 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case user.FieldName:
 		return m.OldName(ctx)
-	case user.FieldConnectionString:
-		return m.OldConnectionString(ctx)
-	case user.FieldPassword:
-		return m.OldPassword(ctx)
+	case user.FieldPhoneNumber:
+		return m.OldPhoneNumber(ctx)
+	case user.FieldLastDigits:
+		return m.OldLastDigits(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -1215,19 +1215,19 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetName(v)
 		return nil
-	case user.FieldConnectionString:
+	case user.FieldPhoneNumber:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetConnectionString(v)
+		m.SetPhoneNumber(v)
 		return nil
-	case user.FieldPassword:
+	case user.FieldLastDigits:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPassword(v)
+		m.SetLastDigits(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -1281,11 +1281,11 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldName:
 		m.ResetName()
 		return nil
-	case user.FieldConnectionString:
-		m.ResetConnectionString()
+	case user.FieldPhoneNumber:
+		m.ResetPhoneNumber()
 		return nil
-	case user.FieldPassword:
-		m.ResetPassword()
+	case user.FieldLastDigits:
+		m.ResetLastDigits()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

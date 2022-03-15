@@ -29,14 +29,14 @@ func init() {
 	userDescName := userFields[0].Descriptor()
 	// user.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	user.NameValidator = userDescName.Validators[0].(func(string) error)
-	// userDescConnectionString is the schema descriptor for connection_string field.
-	userDescConnectionString := userFields[1].Descriptor()
-	// user.ConnectionStringValidator is a validator for the "connection_string" field. It is called by the builders before save.
-	user.ConnectionStringValidator = userDescConnectionString.Validators[0].(func(string) error)
-	// userDescPassword is the schema descriptor for password field.
-	userDescPassword := userFields[2].Descriptor()
-	// user.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
-	user.PasswordValidator = userDescPassword.Validators[0].(func(string) error)
+	// userDescPhoneNumber is the schema descriptor for phone_number field.
+	userDescPhoneNumber := userFields[1].Descriptor()
+	// user.PhoneNumberValidator is a validator for the "phone_number" field. It is called by the builders before save.
+	user.PhoneNumberValidator = userDescPhoneNumber.Validators[0].(func(string) error)
+	// userDescLastDigits is the schema descriptor for last_digits field.
+	userDescLastDigits := userFields[2].Descriptor()
+	// user.LastDigitsValidator is a validator for the "last_digits" field. It is called by the builders before save.
+	user.LastDigitsValidator = userDescLastDigits.Validators[0].(func(string) error)
 }
 
 const (

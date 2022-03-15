@@ -26,7 +26,7 @@ func TestCacheHook(t *testing.T) {
 	u := c.User.Create().SetName("Yoni").
 		SetCache(cl).
 		AddPets(d).
-		SetConnectionString("mysql://root:pass@localhost:3306)").
+		SetPhoneNumber("315-077-2231").
 		SaveX(ctx)
 	c.Dog.UpdateOne(d).SetName("Fortuna").ExecX(ctx)
 	cs.Close()
@@ -40,7 +40,7 @@ func TestDogNameValidationHook(t *testing.T) {
 		"file:TestSchemaConfHooks?mode=memory&cache=shared&_fk=1",
 	)
 	u := c.User.Create().SetName("Yoni").
-		SetConnectionString("mysql://root:pass@localhost:3306)").
+		SetPhoneNumber("315-077-2231").
 		SaveX(ctx)
 	_, err := c.Dog.Create().SetName("Yolo").SetOwner(u).Save(ctx)
 	require.Error(t, err)
